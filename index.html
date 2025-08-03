@@ -1479,7 +1479,7 @@
             transform: translateY(0);
         }
 
-        /* Animation für Scroll-Hint */
+        /* Animation für Scroll-Hint - bewegt sich nur einmal in eine Richtung */
         @keyframes hintScrollLeft {
             0% { transform: translateX(0px); }
             100% { transform: translateX(-40px); }
@@ -1490,16 +1490,16 @@
             100% { transform: translateX(40px); }
         }
 
-        .grid-motion-section.visible .grid-motion-row[data-row="0"] {
-            animation: hintScrollLeft 3s ease-out 1s 1 forwards;
-        }
+        /* Hint-Animationen nur für Desktop/Tablet (nicht Mobile) */
+        @media (min-width: 769px) {
+            .grid-motion-section.visible .grid-motion-row[data-row="0"] {
+                animation: hintScrollLeft 3s ease-out 1s 1 forwards;
+            }
 
-        .grid-motion-section.visible .grid-motion-row[data-row="1"] {
-            animation: hintScrollRight 3s ease-out 1.5s 1 forwards;
-        }
+            .grid-motion-section.visible .grid-motion-row[data-row="1"] {
+                animation: hintScrollRight 3s ease-out 1.5s 1 forwards;
+            }
 
-        .grid-motion-section.visible .grid-motion-row[data-row="2"] {
-            animation: hintScrollLeft 3s ease-out 2s 1 forwards;
         }
 
         .grid-motion-section:active {
@@ -1700,12 +1700,7 @@
                 0 4px 12px rgba(0, 0, 0, 0.1),
                 0 2px 6px rgba(0, 0, 0, 0.05);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .grid-motion-item {
             aspect-ratio: 1;
-            position: relative;
-            overflow: hidden;
         }
 
         .grid-motion-item:hover {
@@ -2077,17 +2072,11 @@
                 line-height: 1.2;
             }
             
-            /* Touch-optimierte Animationen */
-            .grid-motion-section.visible .grid-motion-row[data-row="0"] {
-                animation: hintScrollLeft 2s ease-out 0.5s 1 forwards;
-            }
-
+            /* Deaktiviere Hint-Animationen für Mobile - sie blockieren das native Scrolling */
+            .grid-motion-section.visible .grid-motion-row[data-row="0"],
             .grid-motion-section.visible .grid-motion-row[data-row="1"] {
-                animation: hintScrollRight 2s ease-out 1s 1 forwards;
-            }
-
-            .grid-motion-section.visible .grid-motion-row[data-row="2"] {
-                animation: hintScrollLeft 2s ease-out 1.5s 1 forwards;
+                animation: none;
+                transform: translateX(0);
             }
             
             /* Touch-Feedback */
@@ -2250,34 +2239,6 @@
                     <div class="grid-motion-item">
                         <div class="grid-item-content grid-item-image" style="background-image: url('public/2.png')"></div>
                         <div class="grid-description">Grafik-Design mit innovativen visuellen Lösungen</div>
-                    </div>
-                </div>
-                <div class="grid-motion-row" data-row="2">
-                    <div class="grid-motion-item">
-                        <div class="grid-item-content">VISUAL</div>
-                    </div>
-                    <div class="grid-motion-item noise-container">
-                        <div class="grid-item-content noise-text">
-                            <h1 class="noise-title">IDENTITY</h1>
-                            <canvas class="noise-canvas"></canvas>
-                        </div>
-                    </div>
-                    <div class="grid-motion-item">
-                        <div class="grid-item-content grid-item-image" style="background-image: url('public/3.png')"></div>
-                        <div class="grid-description">Mobile App für digitale Prozessoptimierung</div>
-                    </div>
-                    <div class="grid-motion-item">
-                        <div class="grid-item-content">BRAND</div>
-                    </div>
-                    <div class="grid-motion-item">
-                        <div class="grid-item-content">STRATEGY</div>
-                    </div>
-                    <div class="grid-motion-item">
-                        <div class="grid-item-content grid-item-image" style="background-image: url('public/1.png')"></div>
-                        <div class="grid-description">Webentwicklung mit modernsten Technologien</div>
-                    </div>
-                    <div class="grid-motion-item">
-                        <div class="grid-item-content">PIXEL</div>
                     </div>
                 </div>
             </div>
@@ -2537,18 +2498,30 @@
                         entry.target.classList.add('visible');
                         // Also hide scroll indicator when grid becomes visible
                         scrollIndicator.classList.add('hidden');
-                    } else {
-                        // Show scroll indicator again if we scroll back up
-                        const heroRect = heroSection.getBoundingClientRect();
-                        if (heroRect.top > -heroRect.height * 0.7) {
-                            handleScrollIndicatorVisibility();
-                        }
+                        // Stop observing after first trigger
+                        gridObserver.unobserve(entry.target);
                     }
                 });
             }, gridObserverOptions);
 
             // Observe grid motion section for fade-in
             gridObserver.observe(gridMotionSection);
+            
+            // Nach Animationen: Entferne CSS-Animation und setze finale Transform-Werte
+            setTimeout(() => {
+                const rows = document.querySelectorAll('.grid-motion-row');
+                rows.forEach((row, index) => {
+                    const rowIndex = parseInt(row.dataset.row);
+                    // Entferne die CSS-Animation
+                    row.style.animation = 'none';
+                    // Setze finale Position basierend auf der Reihe
+                    if (rowIndex === 0) {
+                        row.style.transform = 'translateX(-40px)';
+                    } else if (rowIndex === 1) {
+                        row.style.transform = 'translateX(40px)';
+                    }
+                });
+            }, 6000); // Nach allen Animationen (2s delay + 3s animation = 5s total + 1s Puffer)
         }
 
         // Initialize smooth scroll functionality
@@ -2642,7 +2615,7 @@
             let dragStartTime = 0;
             let startX = 0;
             let startY = 0;
-            let currentRowX = [0, 0, 0]; // Für jede Reihe separate Position
+            let currentRowX = [0, 0]; // Für jede Reihe separate Position
             let activeRow = null;
             
             // Mouse Events für Desktop
@@ -2650,33 +2623,42 @@
             document.addEventListener('mousemove', drag);
             document.addEventListener('mouseup', endDrag);
             
-            // Touch Events nur für Tablets (nicht Mobile)
-            if (window.innerWidth > 768) {
-                gridSection.addEventListener('touchstart', handleTouch);
-                document.addEventListener('touchmove', handleTouch);
-                document.addEventListener('touchend', endDrag);
-            }
+            // Touch Events für alle Geräte aktivieren
+            gridSection.addEventListener('touchstart', handleTouch);
+            document.addEventListener('touchmove', handleTouch);
+            document.addEventListener('touchend', endDrag);
             
             function startDrag(e) {
-                e.preventDefault();
+                // Nur preventDefault() auf Desktop/Tablet, nicht auf Mobile
+                if (window.innerWidth > 768) {
+                    e.preventDefault();
+                }
                 isDragging = true;
                 startX = e.clientX || e.touches[0].clientX;
                 startY = e.clientY || e.touches[0].clientY;
                 gridSection.style.cursor = 'grabbing';
                 
-                // Bestimme die Reihe basierend auf der Y-Position
-                const sectionRect = gridSection.getBoundingClientRect();
-                const relativeY = startY - sectionRect.top;
-                const rowHeight = sectionRect.height / 3; // 3 Reihen
-                
-                activeRow = Math.floor(relativeY / rowHeight);
-                activeRow = Math.max(0, Math.min(2, activeRow)); // Zwischen 0 und 2 begrenzen
+                // Bestimme die Reihe direkt durch das Element
+                const targetRow = e.target.closest('.grid-motion-row');
+                if (targetRow) {
+                    activeRow = parseInt(targetRow.dataset.row);
+                } else {
+                    // Fallback: Y-Position-Berechnung
+                    const sectionRect = gridSection.getBoundingClientRect();
+                    const relativeY = startY - sectionRect.top;
+                    const rowHeight = sectionRect.height / 2;
+                    activeRow = Math.floor(relativeY / rowHeight);
+                    activeRow = Math.max(0, Math.min(1, activeRow));
+                }
             }
             
             function drag(e) {
                 if (!isDragging || activeRow === null) return;
                 
-                e.preventDefault();
+                // Nur preventDefault() auf Desktop/Tablet, nicht auf Mobile
+                if (window.innerWidth > 768) {
+                    e.preventDefault();
+                }
                 const currentX = e.clientX || (e.touches && e.touches[0].clientX);
                 const deltaX = currentX - startX;
                 
@@ -2715,15 +2697,16 @@
                     const target = e.target.closest('.grid-motion-row');
                     if (target && window.innerWidth <= 768) {
                         // Auf Mobile: Lass das native Scrolling der Rows zu
-                        // Nur wenn der Touch nicht direkt auf einer Row ist, aktiviere das Drag-System
-                        if (!e.target.closest('.grid-motion-item')) {
-                            startDrag(e);
-                        }
+                        // Kein preventDefault() für Touch-Events auf Mobile
+                        return;
                     } else {
                         startDrag(e);
                     }
                 } else if (e.type === 'touchmove') {
-                    drag(e);
+                    // Nur drag() ausführen wenn wir nicht auf Mobile sind
+                    if (window.innerWidth > 768) {
+                        drag(e);
+                    }
                 }
             }
             
@@ -2894,9 +2877,7 @@
             
             // Hide only on actual drag/touch interaction, not hover
             gridSection.addEventListener('mousedown', hideSwipeTutorial);
-            if (window.innerWidth > 768) {
-                gridSection.addEventListener('touchstart', hideSwipeTutorial);
-            }
+            gridSection.addEventListener('touchstart', hideSwipeTutorial);
             
             // Hide on drag movement (not just hover)
             let isDraggingForTutorial = false;
