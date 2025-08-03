@@ -42,6 +42,205 @@
             box-sizing: border-box;
         }
 
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Light Mode Loading */
+        .loading-screen {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        /* Dark Mode Loading */
+        [data-theme="dark"] .loading-screen {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Spektakulärer Loading Spinner */
+        .loading-spinner {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 20px 0;
+        }
+
+        .loading-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+
+        .loading-ring-1 {
+            border-top: 3px solid #000;
+            animation: spinCW 2s linear infinite;
+        }
+
+        .loading-ring-2 {
+            border-right: 3px solid #333;
+            animation: spinCCW 1.5s linear infinite;
+            width: 90%;
+            height: 90%;
+            top: 5%;
+            left: 5%;
+        }
+
+        .loading-ring-3 {
+            border-bottom: 3px solid #666;
+            animation: spinCW 1s linear infinite;
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+        }
+
+        [data-theme="dark"] .loading-ring-1 {
+            border-top: 3px solid #fff;
+        }
+
+        [data-theme="dark"] .loading-ring-2 {
+            border-right: 3px solid #ccc;
+        }
+
+        [data-theme="dark"] .loading-ring-3 {
+            border-bottom: 3px solid #999;
+        }
+
+        @keyframes spinCW {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spinCCW {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Glowing Center Orb */
+        .loading-orb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            animation: orbPulse 2s ease-in-out infinite;
+        }
+
+        [data-theme="dark"] .loading-orb {
+            background: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .loading-orb {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes orbPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.7;
+            }
+        }
+
+        /* Progress Bar */
+        .loading-progress {
+            width: 300px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        [data-theme="dark"] .loading-progress {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .loading-progress-bar {
+            background: linear-gradient(90deg, #fff, #ccc);
+        }
+
+        .loading-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: progressShine 2s ease-in-out infinite;
+        }
+
+        @keyframes progressShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Loading Text */
+        .loading-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .loading-percentage {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 10px;
+        }
+
         html {
             background: var(--bg-primary) !important;
             transition: var(--transition);
@@ -55,6 +254,15 @@
             line-height: 1.6;
             font-weight: 400;
             transition: var(--transition);
+        }
+
+        /* Hide main content during loading */
+        body.loading .hero-section,
+        body.loading .grid-motion-section,
+        body.loading .content-section,
+        body.loading .theme-toggle,
+        body.loading .scroll-indicator {
+            visibility: hidden;
         }
 
         .hero-section {
@@ -1098,8 +1306,8 @@
         }
 
         .content-section {
-            padding: clamp(60px, 15vw, 120px) clamp(16px, 5vw, 24px);
-            max-width: 1400px;
+            padding: clamp(80px, 15vw, 140px) clamp(20px, 5vw, 40px);
+            max-width: 1200px;
             margin: 0 auto;
             background: var(--bg-primary);
             transition: var(--transition);
@@ -1107,7 +1315,88 @@
 
         .section-header {
             text-align: center;
-            margin-bottom: clamp(40px, 10vw, 80px);
+            margin-bottom: clamp(60px, 12vw, 100px);
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        .section-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+            letter-spacing: 0.02em;
+        }
+
+        /* Services Text Layout - Minimalist */
+        .services-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .services-intro {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: clamp(40px, 8vw, 60px);
+            font-weight: 400;
+        }
+
+        .services-list {
+            display: grid;
+            gap: clamp(30px, 6vw, 50px);
+        }
+
+        .service-item {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: clamp(20px, 4vw, 30px);
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .service-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: clamp(12px, 2vw, 16px);
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        .service-text {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .services-outro {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-top: clamp(40px, 8vw, 60px);
+            text-align: center;
+            font-style: italic;
         }
 
         .section-title {
@@ -1248,8 +1537,17 @@
         }
 
         @media (max-width: 768px) {
+            /* Deaktiviere Lampen-Effekt auf Mobile */
+            .hero-lamp {
+                display: none !important;
+            }
+            
+            .light-effect {
+                display: none !important;
+            }
+            
             .services-strip {
-                bottom: 20%;
+                bottom: 15%;
                 width: 90%;
                 height: 1px;
             }
@@ -1261,14 +1559,16 @@
             }
             
             .central-cta {
-                top: 30%;
-                padding: 0 16px;
+                top: 25%;
+                padding: 0 20px;
+                z-index: 15;
             }
             
             .company-title {
-                font-size: clamp(3rem, 12vw, 4.5rem) !important;
+                font-size: clamp(2.5rem, 10vw, 3.5rem) !important;
                 margin-bottom: 1rem !important;
-                line-height: 0.9 !important;
+                line-height: 0.95 !important;
+                text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             }
             
             .company-services {
@@ -1288,12 +1588,16 @@
                 max-width: 250px;
                 padding: 12px 20px;
                 font-size: 0.9rem;
+                backdrop-filter: blur(10px);
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
             }
             
             .hero-section {
                 min-height: 100vh;
                 position: relative;
                 z-index: 1;
+                padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             }
             
             .hero-text {
@@ -1309,30 +1613,86 @@
             }
             
             .video-grid {
-                width: 100vw !important;
-                height: 100vh !important;
-                gap: 0 !important;
-                grid-template-columns: 1fr !important;
-                grid-template-rows: 1fr !important;
-                top: 0 !important;
-                left: 0 !important;
-                transform: none !important;
+                width: 90vw !important;
+                height: 60vh !important;
+                max-height: 500px !important;
+                gap: 4px !important;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: 1fr 1fr !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                border-radius: 16px !important;
+                overflow: hidden !important;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
             }
             
             .video-tile {
-                border-radius: 0 !important;
+                border-radius: 8px !important;
                 box-shadow: none !important;
             }
             
-            .video-tile:not(.center-tile) {
-                display: none !important;
+            .video-tile:first-child {
+                border-radius: 16px 4px 4px 4px !important;
             }
             
-            .video-tile.center-tile video {
-                width: 100% !important;
-                height: 100% !important;
-                transform: none !important;
+            .video-tile:nth-child(2) {
+                border-radius: 4px 16px 4px 4px !important;
+            }
+            
+            .video-tile:nth-child(3) {
+                border-radius: 4px 4px 4px 16px !important;
+            }
+            
+            .video-tile:nth-child(4) {
+                border-radius: 4px 4px 16px 4px !important;
+            }
+            
+            .video-tile video {
+                width: 200% !important;
+                height: 200% !important;
                 object-position: center center;
+                object-fit: cover;
+            }
+            
+            /* Position each video tile to show different sections like on Desktop */
+            .video-tile:nth-child(1) video { 
+                transform: translate(0%, 0%) !important; 
+            }
+            .video-tile:nth-child(2) video { 
+                transform: translate(-50%, 0%) !important; 
+            }
+            .video-tile:nth-child(3) video { 
+                transform: translate(0%, -50%) !important; 
+            }
+            .video-tile:nth-child(4) video { 
+                transform: translate(-50%, -50%) !important; 
+            }
+            
+            .theme-toggle {
+                top: 20px !important;
+                right: 20px !important;
+                width: 44px !important;
+                height: 44px !important;
+                z-index: 20 !important;
+            }
+            
+            .overlay {
+                background: linear-gradient(
+                    135deg, 
+                    rgba(0, 0, 0, 0.1) 0%, 
+                    rgba(0, 0, 0, 0.05) 50%, 
+                    rgba(0, 0, 0, 0.1) 100%
+                ) !important;
+            }
+            
+            [data-theme="dark"] .overlay {
+                background: linear-gradient(
+                    135deg, 
+                    rgba(255, 255, 255, 0.05) 0%, 
+                    rgba(255, 255, 255, 0.02) 50%, 
+                    rgba(255, 255, 255, 0.05) 100%
+                ) !important;
             }
             
             .cta-button {
@@ -1479,29 +1839,6 @@
         .grid-motion-section.visible {
             opacity: 1;
             transform: translateY(0);
-        }
-
-        /* Animation für Scroll-Hint - bewegt sich nur einmal in eine Richtung */
-        @keyframes hintScrollLeft {
-            0% { transform: translateX(0px); }
-            100% { transform: translateX(-40px); }
-        }
-
-        @keyframes hintScrollRight {
-            0% { transform: translateX(0px); }
-            100% { transform: translateX(40px); }
-        }
-
-        /* Hint-Animationen nur für Desktop/Tablet (nicht Mobile) */
-        @media (min-width: 769px) {
-            .grid-motion-section.visible .grid-motion-row[data-row="0"] {
-                animation: hintScrollLeft 3s ease-out 1s 1 forwards;
-            }
-
-            .grid-motion-section.visible .grid-motion-row[data-row="1"] {
-                animation: hintScrollRight 3s ease-out 1.5s 1 forwards;
-            }
-
         }
 
         .grid-motion-section:active {
@@ -2504,10 +2841,33 @@
                 transform: scale(0.98);
                 transition: transform 0.1s ease;
             }
+            
+            /* Nur ein Glow-Effekt auf Mobile - rechte Gradient-Orbs verstecken */
+            .gradient-orb-2, .gradient-orb-4 {
+                display: none !important;
+            }
         }
     </style>
 </head>
-<body>
+<body class="loading">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-container">
+            <div class="loading-spinner">
+                <div class="loading-ring loading-ring-1"></div>
+                <div class="loading-ring loading-ring-2"></div>
+                <div class="loading-ring loading-ring-3"></div>
+                <div class="loading-orb"></div>
+            </div>
+            
+            <div class="loading-progress">
+                <div class="loading-progress-bar" id="loading-progress-bar"></div>
+            </div>
+            
+            <div class="loading-text" id="loading-text">Lade Assets...</div>
+            <div class="loading-percentage" id="loading-percentage">0%</div>
+        </div>
+    </div>
     <!-- Theme Toggle -->
     <button class="theme-toggle" id="theme-toggle">
         <ion-icon name="sunny-outline" id="theme-icon"></ion-icon>
@@ -2713,75 +3073,56 @@
 
     <section id="content" class="content-section">
         <div class="section-header">
-            <h2 class="section-title">Creative Portfolio</h2>
+            <h2 class="section-title">Services</h2>
             <p class="section-subtitle">
-                Innovative digital experiences that push creative boundaries
+                Digitale Exzellenz durch innovative Technologien und kreative Lösungen. Wir transformieren Ihre Vision in messbare Erfolge.
             </p>
         </div>
 
-        <div class="video-gallery">
-            <div class="video-card featured-video">
-                <div class="video-container">
-                    <video class="video-player" controls>
-                        <source src="public/video1.mp4" type="video/mp4">
-                        Ihr Browser unterstützt das Video-Tag nicht.
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
+        <div class="services-content">
+            <div class="services-intro">
+                Klein Digital Solutions steht für hochwertige digitale Lösungen, die Ihr Unternehmen voranbringen. Unsere Expertise umfasst die gesamte Bandbreite moderner Technologien – von der strategischen Konzeption bis zur technischen Umsetzung.
+            </div>
+
+            <div class="services-list">
+                <div class="service-item">
+                    <h3 class="service-name">Webentwicklung</h3>
+                    <p class="service-text">
+                        Moderne, responsive Websites und Web-Applikationen mit React, Next.js und anderen zukunftsweisenden Technologien. Wir entwickeln performante Lösungen, die sowohl technisch exzellent als auch benutzerfreundlich sind. Von E-Commerce-Plattformen bis hin zu komplexen Enterprise-Anwendungen – wir setzen Ihre digitalen Visionen um.
+                    </p>
                 </div>
-                <div class="video-info">
-                    <h3 class="video-title">Digital Excellence</h3>
-                    <p class="video-description">Where creativity meets technology. Our flagship project showcases cutting-edge visual storytelling and immersive digital experiences that captivate audiences.</p>
+
+                <div class="service-item">
+                    <h3 class="service-name">KI-Automation</h3>
+                    <p class="service-text">
+                        Intelligente Automatisierung durch Machine Learning und künstliche Intelligenz. Wir implementieren maßgeschneiderte KI-Lösungen, die repetitive Prozesse eliminieren und Ihre Effizienz maximieren. Von Chatbots über Datenanalyse bis hin zu prädiktiven Systemen – wir bringen KI in Ihr Unternehmen.
+                    </p>
+                </div>
+
+                <div class="service-item">
+                    <h3 class="service-name">Digital Design</h3>
+                    <p class="service-text">
+                        Durchdachtes UI/UX-Design, das Ihre Marke authentisch repräsentiert und Nutzer begeistert. Wir gestalten digitale Erlebnisse, die nicht nur ästhetisch ansprechend sind, sondern auch funktional überzeugen. Von der Konzeption über Prototyping bis zur finalen Umsetzung – Design mit Substanz.
+                    </p>
+                </div>
+
+                <div class="service-item">
+                    <h3 class="service-name">Cloud Solutions</h3>
+                    <p class="service-text">
+                        Skalierbare Cloud-Infrastrukturen und DevOps-Lösungen für maximale Flexibilität und Performance. Wir migrieren bestehende Systeme in die Cloud oder entwickeln native Cloud-Anwendungen. Mit AWS, Azure und Google Cloud realisieren wir robuste, sichere und kosteneffiziente Lösungen.
+                    </p>
+                </div>
+
+                <div class="service-item">
+                    <h3 class="service-name">Digital Consulting</h3>
+                    <p class="service-text">
+                        Strategische Beratung für digitale Transformation und Technologie-Evaluation. Wir analysieren Ihre bestehenden Prozesse, identifizieren Optimierungspotentiale und entwickeln maßgeschneiderte Digitalisierungsstrategien. Unser Ziel: nachhaltige Wettbewerbsvorteile durch intelligente Technologie-Integration.
+                    </p>
                 </div>
             </div>
 
-            <div class="video-card">
-                <div class="video-container">
-                    <video class="video-player" controls>
-                        <source src="public/srvice8.mp4" type="video/mp4">
-                        Ihr Browser unterstützt das Video-Tag nicht.
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">Brand Identity</h3>
-                    <p class="video-description">Strategic visual communication that builds memorable brand experiences and drives engagement.</p>
-                </div>
-            </div>
-
-            <div class="video-card">
-                <div class="video-container">
-                    <video class="video-player" controls>
-                        <source src="public/Gelb Orange Abstrakt Farbe und Stil Video-Hintergrund.mp4" type="video/mp4">
-                        Ihr Browser unterstützt das Video-Tag nicht.
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">Motion Design</h3>
-                    <p class="video-description">Dynamic animations and fluid motion graphics that bring ideas to life with style and purpose.</p>
-                </div>
-            </div>
-
-            <div class="video-card">
-                <div class="video-container">
-                    <video class="video-player" controls>
-                        <source src="public/Design ohne Titel.mp4" type="video/mp4">
-                        Ihr Browser unterstützt das Video-Tag nicht.
-                    </video>
-                    <div class="video-overlay">
-                        <div class="play-button">▶</div>
-                    </div>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">Visual Innovation</h3>
-                    <p class="video-description">Pioneering design concepts that challenge conventions and create meaningful digital experiences.</p>
-                </div>
+            <div class="services-outro">
+                Jedes Projekt ist einzigartig. Wir entwickeln individuelle Lösungen, die genau zu Ihren Anforderungen und Zielen passen.
             </div>
         </div>
     </section>
@@ -2959,22 +3300,6 @@
 
             // Observe grid motion section for fade-in
             gridObserver.observe(gridMotionSection);
-            
-            // Nach Animationen: Entferne CSS-Animation und setze finale Transform-Werte
-            setTimeout(() => {
-                const rows = document.querySelectorAll('.grid-motion-row');
-                rows.forEach((row, index) => {
-                    const rowIndex = parseInt(row.dataset.row);
-                    // Entferne die CSS-Animation
-                    row.style.animation = 'none';
-                    // Setze finale Position basierend auf der Reihe
-                    if (rowIndex === 0) {
-                        row.style.transform = 'translateX(-40px)';
-                    } else if (rowIndex === 1) {
-                        row.style.transform = 'translateX(40px)';
-                    }
-                });
-            }, 6000); // Nach allen Animationen (2s delay + 3s animation = 5s total + 1s Puffer)
         }
 
         // Initialize smooth scroll functionality
@@ -3675,6 +4000,261 @@
         // Initialize grid motion after DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             // Removed automatic grid motion - now purely manual drag & drop
+        });
+
+        // ============================================
+        // LOADING SCREEN & PRELOADER FUNCTIONALITY
+        // ============================================
+        
+        class PreLoader {
+            constructor() {
+                this.loadingScreen = document.getElementById('loading-screen');
+                this.progressBar = document.getElementById('loading-progress-bar');
+                this.loadingText = document.getElementById('loading-text');
+                this.loadingPercentage = document.getElementById('loading-percentage');
+                
+                this.totalAssets = 0;
+                this.loadedAssets = 0;
+                this.progress = 0;
+                
+                this.assets = {
+                    videos: [
+                        'public/kds.mp4',
+                        'public/tvkasten.mp4',
+                        'public/tvameise.mp4'
+                    ],
+                    images: [
+                        'public/1.png',
+                        'public/2.png',
+                        'public/3.png',
+                        'public/portfolioweb1.png'
+                    ]
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.loadAssets();
+                this.updateProgress();
+            }
+            
+            loadAssets() {
+                // Automatische Asset-Erkennung aus der Website
+                this.detectPageAssets();
+                
+                const allAssets = [...this.assets.videos, ...this.assets.images];
+                this.totalAssets = allAssets.length;
+                
+                if (this.totalAssets === 0) {
+                    // Keine Assets gefunden - sofort fertig
+                    setTimeout(() => this.completeLoading(), 500);
+                    return;
+                }
+                
+                // Load videos
+                this.assets.videos.forEach(videoSrc => {
+                    this.preloadVideo(videoSrc);
+                });
+                
+                // Load images
+                this.assets.images.forEach(imageSrc => {
+                    this.preloadImage(imageSrc);
+                });
+                
+                // Minimum loading time for UX
+                setTimeout(() => {
+                    if (this.progress >= 100) {
+                        this.completeLoading();
+                    }
+                }, 1500); // Reduziert von 2000ms
+            }
+            
+            detectPageAssets() {
+                // Finde alle Video-Sources in der Website
+                const videoSources = document.querySelectorAll('video source');
+                const detectedVideos = new Set();
+                
+                videoSources.forEach(source => {
+                    const src = source.getAttribute('src');
+                    if (src && src.startsWith('public/')) {
+                        detectedVideos.add(src);
+                    }
+                });
+                
+                // Finde alle Bilder
+                const images = document.querySelectorAll('img');
+                const detectedImages = new Set();
+                
+                images.forEach(img => {
+                    const src = img.getAttribute('src');
+                    if (src && src.startsWith('public/')) {
+                        detectedImages.add(src);
+                    }
+                });
+                
+                // Update Asset-Listen mit tatsächlich gefundenen Assets
+                this.assets.videos = Array.from(detectedVideos);
+                this.assets.images = Array.from(detectedImages);
+                
+                console.log('🎬 Detected Videos:', this.assets.videos);
+                console.log('🖼️ Detected Images:', this.assets.images);
+            }
+            
+            preloadVideo(src) {
+                const video = document.createElement('video');
+                video.preload = 'metadata';
+                video.muted = true; // Wichtig für Autoplay
+                
+                // Timeout für Videos, die zu lange brauchen
+                const timeout = setTimeout(() => {
+                    console.warn(`Video timeout: ${src}`);
+                    this.onAssetLoaded(`Video (timeout): ${src.split('/').pop()}`);
+                    cleanup();
+                }, 5000); // 5 Sekunden Timeout
+                
+                const cleanup = () => {
+                    clearTimeout(timeout);
+                    video.removeEventListener('loadedmetadata', onLoad);
+                    video.removeEventListener('error', onError);
+                    video.removeEventListener('canplaythrough', onCanPlay);
+                };
+                
+                const onLoad = () => {
+                    this.onAssetLoaded(`Video: ${src.split('/').pop()}`);
+                    cleanup();
+                };
+                
+                const onCanPlay = () => {
+                    this.onAssetLoaded(`Video ready: ${src.split('/').pop()}`);
+                    cleanup();
+                };
+                
+                const onError = () => {
+                    console.warn(`Failed to load video: ${src}`);
+                    this.onAssetLoaded(`Video (error): ${src.split('/').pop()}`);
+                    cleanup();
+                };
+                
+                video.addEventListener('loadedmetadata', onLoad);
+                video.addEventListener('canplaythrough', onCanPlay);
+                video.addEventListener('error', onError);
+                video.src = src;
+            }
+            
+            preloadImage(src) {
+                const img = new Image();
+                
+                // Timeout für Bilder
+                const timeout = setTimeout(() => {
+                    console.warn(`Image timeout: ${src}`);
+                    this.onAssetLoaded(`Bild (timeout): ${src.split('/').pop()}`);
+                    cleanup();
+                }, 3000); // 3 Sekunden Timeout
+                
+                const cleanup = () => {
+                    clearTimeout(timeout);
+                    img.removeEventListener('load', onLoad);
+                    img.removeEventListener('error', onError);
+                };
+                
+                const onLoad = () => {
+                    this.onAssetLoaded(`Bild: ${src.split('/').pop()}`);
+                    cleanup();
+                };
+                
+                const onError = () => {
+                    console.warn(`Failed to load image: ${src}`);
+                    this.onAssetLoaded(`Bild (error): ${src.split('/').pop()}`);
+                    cleanup();
+                };
+                
+                img.addEventListener('load', onLoad);
+                img.addEventListener('error', onError);
+                img.src = src;
+            }
+            
+            onAssetLoaded(assetName) {
+                this.loadedAssets++;
+                this.progress = Math.round((this.loadedAssets / this.totalAssets) * 100);
+                
+                // Update UI
+                this.updateProgress();
+                this.updateLoadingText(assetName);
+                
+                // Complete when all assets loaded
+                if (this.loadedAssets >= this.totalAssets) {
+                    setTimeout(() => {
+                        this.completeLoading();
+                    }, 500);
+                }
+            }
+            
+            updateProgress() {
+                this.progressBar.style.width = this.progress + '%';
+                this.loadingPercentage.textContent = this.progress + '%';
+            }
+            
+            updateLoadingText(assetName) {
+                const messages = [
+                    'Lade Videos...',
+                    'Lade Bilder...',
+                    'Optimiere Performance...',
+                    'Bereite Erlebnis vor...',
+                    'Fast fertig...'
+                ];
+                
+                if (this.progress < 20) {
+                    this.loadingText.textContent = messages[0];
+                } else if (this.progress < 40) {
+                    this.loadingText.textContent = messages[1];
+                } else if (this.progress < 60) {
+                    this.loadingText.textContent = messages[2];
+                } else if (this.progress < 90) {
+                    this.loadingText.textContent = messages[3];
+                } else {
+                    this.loadingText.textContent = messages[4];
+                }
+            }
+            
+            completeLoading() {
+                // Final animations
+                this.progress = 100;
+                this.updateProgress();
+                this.loadingText.textContent = 'Willkommen!';
+                
+                // Remove loading class from body
+                document.body.classList.remove('loading');
+                
+                // Fade out loading screen
+                setTimeout(() => {
+                    this.loadingScreen.classList.add('fade-out');
+                    
+                    // Remove loading screen from DOM
+                    setTimeout(() => {
+                        this.loadingScreen.remove();
+                        
+                        // Initialize main application
+                        this.initMainApp();
+                    }, 800);
+                }, 1000);
+            }
+            
+            initMainApp() {
+                // Start main application animations
+                setTimeout(() => {
+                    document.querySelector('.central-cta').classList.add('fade-in');
+                    document.querySelector('.services-strip').classList.add('fade-in');
+                    document.querySelector('.video-grid').classList.add('fade-in');
+                    document.querySelector('.hero-text-left').classList.add('fade-in');
+                    document.querySelector('.hero-text-right').classList.add('fade-in');
+                }, 300);
+            }
+        }
+        
+        // Initialize preloader when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new PreLoader();
         });
 
     </script>
