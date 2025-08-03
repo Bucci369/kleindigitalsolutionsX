@@ -1472,6 +1472,8 @@
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 1s ease-out, transform 1s ease-out;
+            margin-bottom: 150px;
+            padding-bottom: 200px;
         }
 
         .grid-motion-section.visible {
@@ -1529,32 +1531,32 @@
         }
 
         .gradient-orb-1 {
-            background: radial-gradient(circle at center, rgba(255, 0, 150, 0.4) 0%, rgba(255, 100, 200, 0.2) 50%, rgba(255, 0, 150, 0) 70%);
+            background: radial-gradient(circle at center, rgba(255, 0, 150, 0.2) 0%, rgba(255, 100, 200, 0.1) 50%, rgba(255, 0, 150, 0) 70%);
             animation: float1 8s ease-in-out infinite;
             transform-origin: center center;
         }
 
         .gradient-orb-2 {
-            background: radial-gradient(circle at center, rgba(0, 255, 200, 0.3) 0%, rgba(100, 255, 250, 0.2) 50%, rgba(0, 255, 200, 0) 70%);
+            background: radial-gradient(circle at center, rgba(0, 255, 200, 0.15) 0%, rgba(100, 255, 250, 0.1) 50%, rgba(0, 255, 200, 0) 70%);
             animation: float2 10s ease-in-out infinite;
             transform-origin: center center;
         }
 
         .gradient-orb-3 {
-            background: radial-gradient(circle at center, rgba(255, 165, 0, 0.3) 0%, rgba(255, 200, 100, 0.2) 50%, rgba(255, 165, 0, 0) 70%);
+            background: radial-gradient(circle at center, rgba(255, 165, 0, 0.15) 0%, rgba(255, 200, 100, 0.1) 50%, rgba(255, 165, 0, 0) 70%);
             animation: float3 12s ease-in-out infinite;
             transform-origin: center center;
         }
 
         .gradient-orb-4 {
-            background: radial-gradient(circle at center, rgba(0, 150, 255, 0.2) 0%, rgba(100, 200, 255, 0.15) 50%, rgba(0, 150, 255, 0) 70%);
+            background: radial-gradient(circle at center, rgba(0, 150, 255, 0.1) 0%, rgba(100, 200, 255, 0.08) 50%, rgba(0, 150, 255, 0) 70%);
             animation: float4 14s ease-in-out infinite;
             transform-origin: center center;
-            opacity: 0.7;
+            opacity: 0.4;
         }
 
         .gradient-orb-5 {
-            background: radial-gradient(circle at center, rgba(255, 50, 100, 0.2) 0%, rgba(255, 150, 200, 0.15) 50%, rgba(255, 50, 100, 0) 70%);
+            background: radial-gradient(circle at center, rgba(255, 50, 100, 0.1) 0%, rgba(255, 150, 200, 0.08) 50%, rgba(255, 50, 100, 0) 70%);
             animation: float5 16s ease-in-out infinite;
             transform-origin: center center;
         }
@@ -1702,6 +1704,24 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             aspect-ratio: 1;
         }
+        
+        .grid-motion-item.noise-container {
+            border: none;
+        }
+        
+        .portfolio-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .portfolio-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        [data-theme="dark"] .portfolio-item:hover {
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+        }
 
         .grid-motion-item:hover {
             transform: scale(1.02);
@@ -1781,23 +1801,23 @@
         }
 
         [data-theme="dark"] .gradient-orb-1 {
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 50%);
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%);
         }
 
         [data-theme="dark"] .gradient-orb-2 {
-            background: radial-gradient(circle at center, rgba(147, 51, 234, 0.6) 0%, rgba(147, 51, 234, 0) 50%);
+            background: radial-gradient(circle at center, rgba(147, 51, 234, 0.2) 0%, rgba(147, 51, 234, 0) 50%);
         }
 
         [data-theme="dark"] .gradient-orb-3 {
-            background: radial-gradient(circle at center, rgba(14, 165, 233, 0.6) 0%, rgba(14, 165, 233, 0) 50%);
+            background: radial-gradient(circle at center, rgba(14, 165, 233, 0.2) 0%, rgba(14, 165, 233, 0) 50%);
         }
 
         [data-theme="dark"] .gradient-orb-4 {
-            background: radial-gradient(circle at center, rgba(239, 68, 68, 0.5) 0%, rgba(239, 68, 68, 0) 50%);
+            background: radial-gradient(circle at center, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0) 50%);
         }
 
         [data-theme="dark"] .gradient-orb-5 {
-            background: radial-gradient(circle at center, rgba(245, 158, 11, 0.6) 0%, rgba(245, 158, 11, 0) 50%);
+            background: radial-gradient(circle at center, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0) 50%);
         }
 
         [data-theme="dark"] .grid-motion-item {
@@ -1824,6 +1844,10 @@
         .noise-container {
             position: relative;
             overflow: hidden;
+        }
+        
+        .noise-container .grid-item-content {
+            border: none !important;
         }
 
         .noise-text {
@@ -1856,13 +1880,14 @@
             height: 100%;
             z-index: 1;
             mix-blend-mode: multiply;
-            opacity: 0.7;
-            filter: contrast(2) brightness(0.5);
+            opacity: 0.9;
+            filter: contrast(3) brightness(0.3);
         }
 
         [data-theme="dark"] .noise-canvas {
             mix-blend-mode: overlay;
-            opacity: 0.8;
+            opacity: 0.6;
+            filter: contrast(2) brightness(1.2);
         }
 
         [data-theme="dark"] .noise-title {
@@ -2188,7 +2213,7 @@
                     <div class="grid-motion-item">
                         <div class="grid-item-content">CREATIVE</div>
                     </div>
-                    <div class="grid-motion-item">
+                    <div class="grid-motion-item portfolio-item" data-portfolio="ecommerce">
                         <div class="grid-item-content grid-item-image" style="background-image: url('public/1.png')"></div>
                         <div class="grid-description">E-Commerce Plattform mit modernem Design und optimierter UX</div>
                     </div>
@@ -2201,7 +2226,7 @@
                     <div class="grid-motion-item">
                         <div class="grid-item-content">STUDIO</div>
                     </div>
-                    <div class="grid-motion-item">
+                    <div class="grid-motion-item portfolio-item" data-portfolio="corporate">
                         <div class="grid-item-content grid-item-image" style="background-image: url('public/2.png')"></div>
                         <div class="grid-description">Corporate Website mit interaktiven Animationen</div>
                     </div>
@@ -2213,7 +2238,7 @@
                     </div>
                 </div>
                 <div class="grid-motion-row" data-row="1">
-                    <div class="grid-motion-item">
+                    <div class="grid-motion-item portfolio-item" data-portfolio="dashboard">
                         <div class="grid-item-content grid-item-image" style="background-image: url('public/3.png')"></div>
                         <div class="grid-description">Dashboard-Interface für Business Analytics</div>
                     </div>
@@ -2223,7 +2248,7 @@
                     <div class="grid-motion-item">
                         <div class="grid-item-content">AGENCY</div>
                     </div>
-                    <div class="grid-motion-item">
+                    <div class="grid-motion-item portfolio-item" data-portfolio="ai-automation">
                         <div class="grid-item-content grid-item-image" style="background-image: url('public/1.png')"></div>
                         <div class="grid-description">KI-gestützte Automatisierungslösung für Unternehmen</div>
                     </div>
@@ -2783,7 +2808,7 @@
                 const patternScaleX = 1;
                 const patternScaleY = 1;
                 const patternRefreshInterval = 2;
-                const patternAlpha = 35;
+                const patternAlpha = 60;
                 
                 const patternCanvas = document.createElement('canvas');
                 patternCanvas.width = patternSize;
@@ -2800,11 +2825,20 @@
                 };
                 
                 const updatePattern = () => {
+                    const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
+                    
                     for (let i = 0; i < patternPixelDataLength; i += 4) {
-                        const value = Math.random() * 255;
-                        patternData.data[i] = value;
-                        patternData.data[i + 1] = value;
-                        patternData.data[i + 2] = value;
+                        let value;
+                        if (isDarkMode) {
+                            // Dark Mode: Mehr helle Pixel für Kontrast gegen dunklen Hintergrund
+                            value = Math.random() < 0.7 ? Math.random() * 255 + 100 : Math.random() * 150;
+                        } else {
+                            // Light Mode: Mehr dunkle Pixel für Kontrast gegen hellen Hintergrund
+                            value = Math.random() < 0.7 ? Math.random() * 80 : Math.random() * 255;
+                        }
+                        patternData.data[i] = Math.min(255, value);
+                        patternData.data[i + 1] = Math.min(255, value);
+                        patternData.data[i + 2] = Math.min(255, value);
                         patternData.data[i + 3] = patternAlpha;
                     }
                     patternCtx.putImageData(patternData, 0, 0);
@@ -2894,11 +2928,250 @@
             });
         }
 
+        // Portfolio item click functionality
+        function initPortfolioClicks() {
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            
+            portfolioItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const portfolioType = item.dataset.portfolio;
+                    
+                    // Create portfolio data
+                    const portfolioData = {
+                        'ecommerce': {
+                            title: 'E-Commerce Plattform',
+                            description: 'Moderne E-Commerce Lösung mit optimierter User Experience und responsivem Design.',
+                            image: 'public/1.png',
+                            technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+                            features: ['Responsive Design', 'Payment Integration', 'Admin Dashboard', 'SEO Optimized']
+                        },
+                        'corporate': {
+                            title: 'Corporate Website',
+                            description: 'Professionelle Unternehmenswebsite mit interaktiven Animationen und modernem Design.',
+                            image: 'public/2.png',
+                            technologies: ['Vue.js', 'GSAP', 'CSS3', 'PHP'],
+                            features: ['Interactive Animations', 'CMS Integration', 'Multi-language', 'Contact Forms']
+                        },
+                        'dashboard': {
+                            title: 'Business Analytics Dashboard',
+                            description: 'Umfassendes Dashboard-Interface für Business Intelligence und Datenvisualisierung.',
+                            image: 'public/3.png',
+                            technologies: ['React', 'D3.js', 'Python', 'PostgreSQL'],
+                            features: ['Real-time Data', 'Custom Charts', 'Export Functions', 'User Management']
+                        },
+                        'ai-automation': {
+                            title: 'KI-Automatisierung',
+                            description: 'Intelligente Automatisierungslösung für Unternehmensprozesse mit Machine Learning.',
+                            image: 'public/1.png',
+                            technologies: ['Python', 'TensorFlow', 'FastAPI', 'Docker'],
+                            features: ['Machine Learning', 'Process Automation', 'API Integration', 'Cloud Deployment']
+                        }
+                    };
+                    
+                    const project = portfolioData[portfolioType];
+                    if (project) {
+                        openPortfolioPage(project);
+                    }
+                });
+            });
+        }
+        
+        function openPortfolioPage(project) {
+            // Create new window/tab with portfolio details
+            const portfolioWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+            
+            const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
+            const theme = isDarkMode ? 'dark' : 'light';
+            
+            portfolioWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="de">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${project.title} - Portfolio</title>
+                    <style>
+                        * {
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+                        
+                        body {
+                            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                            line-height: 1.6;
+                            background: ${theme === 'dark' ? 'linear-gradient(135deg, #0a0f19 0%, #1a1a2e 100%)' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'};
+                            color: ${theme === 'dark' ? '#ffffff' : '#333333'};
+                            min-height: 100vh;
+                            padding: 2rem;
+                        }
+                        
+                        .container {
+                            max-width: 1000px;
+                            margin: 0 auto;
+                            background: ${theme === 'dark' ? 'rgba(15, 20, 30, 0.8)' : 'rgba(255, 255, 255, 0.9)'};
+                            border-radius: 20px;
+                            padding: 3rem;
+                            box-shadow: 0 20px 60px rgba(0, 0, 0, ${theme === 'dark' ? '0.3' : '0.1'});
+                            backdrop-filter: blur(20px);
+                        }
+                        
+                        .header {
+                            text-align: center;
+                            margin-bottom: 3rem;
+                        }
+                        
+                        .title {
+                            font-size: 2.5rem;
+                            font-weight: 800;
+                            margin-bottom: 1rem;
+                            background: ${theme === 'dark' ? 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                        }
+                        
+                        .description {
+                            font-size: 1.2rem;
+                            opacity: 0.8;
+                            max-width: 600px;
+                            margin: 0 auto;
+                        }
+                        
+                        .image-container {
+                            margin: 3rem 0;
+                            text-align: center;
+                        }
+                        
+                        .project-image {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 15px;
+                            box-shadow: 0 15px 40px rgba(0, 0, 0, ${theme === 'dark' ? '0.4' : '0.2'});
+                            transition: transform 0.3s ease;
+                        }
+                        
+                        .project-image:hover {
+                            transform: scale(1.02);
+                        }
+                        
+                        .details {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 3rem;
+                            margin-top: 3rem;
+                        }
+                        
+                        .section {
+                            background: ${theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'};
+                            padding: 2rem;
+                            border-radius: 15px;
+                            border: 1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
+                        }
+                        
+                        .section h3 {
+                            font-size: 1.5rem;
+                            margin-bottom: 1rem;
+                            color: ${theme === 'dark' ? '#ffffff' : '#333333'};
+                        }
+                        
+                        .tech-list, .feature-list {
+                            list-style: none;
+                        }
+                        
+                        .tech-list li, .feature-list li {
+                            padding: 0.5rem 0;
+                            border-bottom: 1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
+                        }
+                        
+                        .tech-list li:last-child, .feature-list li:last-child {
+                            border-bottom: none;
+                        }
+                        
+                        .close-btn {
+                            position: fixed;
+                            top: 2rem;
+                            right: 2rem;
+                            background: ${theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
+                            border: none;
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            color: ${theme === 'dark' ? '#ffffff' : '#333333'};
+                            font-size: 1.5rem;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        }
+                        
+                        .close-btn:hover {
+                            background: ${theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'};
+                            transform: scale(1.1);
+                        }
+                        
+                        @media (max-width: 768px) {
+                            body {
+                                padding: 1rem;
+                            }
+                            
+                            .container {
+                                padding: 2rem;
+                            }
+                            
+                            .details {
+                                grid-template-columns: 1fr;
+                                gap: 2rem;
+                            }
+                            
+                            .title {
+                                font-size: 2rem;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <button class="close-btn" onclick="window.close()">×</button>
+                    
+                    <div class="container">
+                        <div class="header">
+                            <h1 class="title">${project.title}</h1>
+                            <p class="description">${project.description}</p>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="${project.image}" alt="${project.title}" class="project-image" />
+                        </div>
+                        
+                        <div class="details">
+                            <div class="section">
+                                <h3>Technologien</h3>
+                                <ul class="tech-list">
+                                    ${project.technologies.map(tech => `<li>${tech}</li>`).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div class="section">
+                                <h3>Features</h3>
+                                <ul class="feature-list">
+                                    ${project.features.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            portfolioWindow.document.close();
+        }
+
         // Initialize drag functionality when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             initGridDragFunctionality();
             initNoiseEffect();
             initSwipeTutorial();
+            initPortfolioClicks();
         });
         videos.forEach(video => {
             video.addEventListener('play', function() {
