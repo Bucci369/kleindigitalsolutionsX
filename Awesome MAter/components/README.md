@@ -1,0 +1,27 @@
+# Material-UI Components
+
+Hier findest du eine Sammlung von nützlichen Komponenten aus der Awesome Material-UI Liste. Jede Komponente ist als Link zum jeweiligen GitHub-Repository oder zur Webseite hinterlegt.
+
+- [Material-UI Chip Input](https://github.com/TeamWertarbyte/material-ui-chip-input)
+- [Material-UI Password field](https://github.com/TeamWertarbyte/material-ui-password-field)
+- [Fullscreen Dialog](https://github.com/TeamWertarbyte/material-ui-fullscreen-dialog)
+- [Material-UI Upload](https://github.com/corpix/material-ui-upload)
+- [Super Select Field](https://github.com/Sharlaan/material-ui-superselectfield)
+- [Material JSON Schema Form](https://github.com/nadunindunil/material-jsonschema-form)
+- [Notistack](https://github.com/iamhosseindhv/notistack)
+- [Material-UI Dropzone](https://github.com/Yuvaleros/material-ui-dropzone)
+- [Formik-Material-UI](https://github.com/stackworx/formik-material-ui)
+- [Redux-Form-Material-UI](https://github.com/erikras/redux-form-material-ui)
+- [Final-Form-Material-UI](https://github.com/Deadly0/final-form-material-ui)
+- [Material-UI Auto Rotating Carousel](https://mui.wertarbyte.com/#material-auto-rotating-carousel)
+- [Material-UI Image](https://mui.wertarbyte.com/#material-ui-image)
+- [Material-UI Flat Pagination](https://github.com/szmslab/material-ui-flat-pagination)
+- [Dx-react-scheduler-Material-UI](https://devexpress.github.io/devextreme-reactive/react/scheduler/)
+- [Dx-react-chart-Material-UI](https://devexpress.github.io/devextreme-reactive/react/chart/)
+- [Material-UI Medium Blog](https://github.com/sabesansathananthan/material-ui-medium-blog)
+- [React Github Repo Cards](https://github.com/sabesansathananthan/react-github-repo-cards)
+- [React molecule-components](https://github.com/alexandre-lelain/components-extra)
+- [Material-UI NestedMenuItem](https://github.com/azmenak/material-ui-nested-menu-item)
+- [React-planet](https://github.com/innFactory/react-planet)
+- [MUI Phone Input](https://github.com/typesnippet/mui-phone-input)
+- [mui-treasury](https://github.com/siriwatknp/mui-treasury)

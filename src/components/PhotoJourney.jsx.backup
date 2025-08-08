@@ -16,6 +16,16 @@ export default function PhotoJourney() {
     offset: ['start start', 'end end']
   })
 
+  // REMOVE old overflow handler based on isAnimating and replace with scroll lock handler
+  // useEffect(() => {
+  //   if (isAnimating) {
+  //     document.body.style.overflow = 'hidden'
+  //   } else {
+  //     document.body.style.overflow = 'auto'
+  //   }
+  //   return () => { document.body.style.overflow = 'auto' }
+  // }, [isAnimating])
+
   useEffect(() => {
     document.body.style.overflow = isScrollLocked ? 'hidden' : 'auto'
     return () => { document.body.style.overflow = 'auto' }
@@ -66,67 +76,106 @@ export default function PhotoJourney() {
         onUpdate: updateProgress,
         onComplete: () => {
           setCurrentStep(3)
-          setIsAnimating(false)
+          // Immediately start Step 3 without requiring extra scroll
+          animate(progressRef.current, progressRef.current + 1, {
+            duration: 2.0,
+            ease: [0.5, 0, 1, 1],
+            onUpdate: updateProgress,
+            onComplete: () => {
+              setCurrentStep(4)
+              setIsAnimating(false)
+            }
+          })
+          // Allow scroll mid shrink, but animation won't retrigger due to isAnimating
+          setTimeout(() => setIsScrollLocked(false), 1000)
         }
       })
       // Allow scroll mid merge
       setTimeout(() => setIsScrollLocked(false), 1280)
+      
+    } else if (currentStep === 3) {
+      // Fallback: If Step 3 is triggered by scroll, still use current progressRef
+      animate(progressRef.current, progressRef.current + 1, {
+        duration: 2.0,
+        ease: [0.5, 0, 1, 1],
+        onUpdate: updateProgress,
+        onComplete: () => {
+          setCurrentStep(4)
+          setIsAnimating(false)
+        }
+      })
+      setTimeout(() => setIsScrollLocked(false), 1000)
     }
   }
 
   useEffect(() => {
     if (isAnimating) return
     const unsubscribe = scrollYProgress.on('change', (latest) => {
-      if (latest > 0.01 && currentStep < 3) {
+      if (latest > 0.01 && currentStep < 4) {
         triggerNextStep()
       }
     })
     return unsubscribe
   }, [scrollYProgress, currentStep, isAnimating])
 
-  // Linker Kreis Animation - KLEINER GEMACHT
+  // Linker Kreis Animation - VERGRÖSSERT & OPTIMIERT
   const getLeftClipPath = (progress) => {
     if (progress <= 1) {
       // Start: Kreis links, nur 50% im Bild
       const t = progress
       const x = 0 + (25 * t) // 0% → 25% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 2) {
       // Kreise kommen zusammen
       const t = progress - 1
       const x = 25 + (25 * t) // 25% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 3) {
       // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)`
+      
     } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      // Wird kleiner und verschwindet komplett
+      const t = progress - 3
+      const radius = 75 - (75 * t)
+      if (radius <= 0) {
+        return `circle(0px at 50% 55%)` // Komplett verschwunden
+      }
+      return `circle(min(${radius}vh, ${radius}vw) at 50% 55%)`
     }
   }
 
-  // Rechter Kreis Animation - KLEINER GEMACHT
+  // Rechter Kreis Animation - VERGRÖSSERT & OPTIMIERT
   const getRightClipPath = (progress) => {
     if (progress <= 1) {
       // Start: Kreis rechts, nur 50% im Bild
       const t = progress
       const x = 100 - (25 * t) // 100% → 75% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 2) {
       // Kreise kommen zusammen
       const t = progress - 1
       const x = 75 - (25 * t) // 75% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 3) {
       // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)`
+      
     } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      // Wird kleiner und verschwindet komplett
+      const t = progress - 3
+      const radius = 75 - (75 * t)
+      if (radius <= 0) {
+        return `circle(0px at 50% 55%)` // Komplett verschwunden
+      }
+      return `circle(min(${radius}vh, ${radius}vw) at 50% 55%)`
     }
   }
+
 
   return (
     <>
@@ -157,6 +206,7 @@ export default function PhotoJourney() {
       </motion.div>
       
       <div ref={containerRef} className="relative z-10">
+        <div className="h-screen"></div>
         <div className="h-screen"></div>
         <div className="h-screen"></div>
         <div className="h-screen"></div>

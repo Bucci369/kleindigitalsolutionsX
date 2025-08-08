@@ -84,47 +84,47 @@ export default function PhotoJourney() {
     return unsubscribe
   }, [scrollYProgress, currentStep, isAnimating])
 
-  // Linker Kreis Animation - KLEINER GEMACHT
+  // Linker Kreis Animation - VERGRÖSSERT & OPTIMIERT
   const getLeftClipPath = (progress) => {
     if (progress <= 1) {
       // Start: Kreis links, nur 50% im Bild
       const t = progress
       const x = 0 + (25 * t) // 0% → 25% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 2) {
       // Kreise kommen zusammen
       const t = progress - 1
       const x = 25 + (25 * t) // 25% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 3) {
       // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)`
     } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)` // Stay at max size
     }
   }
 
-  // Rechter Kreis Animation - KLEINER GEMACHT
+  // Rechter Kreis Animation - VERGRÖSSERT & OPTIMIERT
   const getRightClipPath = (progress) => {
     if (progress <= 1) {
       // Start: Kreis rechts, nur 50% im Bild
       const t = progress
       const x = 100 - (25 * t) // 100% → 75% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 2) {
       // Kreise kommen zusammen
       const t = progress - 1
       const x = 75 - (25 * t) // 75% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 3) {
       // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)`
     } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)` // Stay at max size
     }
   }
 

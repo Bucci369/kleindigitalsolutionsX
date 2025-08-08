@@ -84,48 +84,73 @@ export default function PhotoJourney() {
     return unsubscribe
   }, [scrollYProgress, currentStep, isAnimating])
 
-  // Linker Kreis Animation - KLEINER GEMACHT
+  // Linker Kreis Animation - VERGRÖSSERT & OPTIMIERT
   const getLeftClipPath = (progress) => {
     if (progress <= 1) {
       // Start: Kreis links, nur 50% im Bild
       const t = progress
       const x = 0 + (25 * t) // 0% → 25% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 2) {
       // Kreise kommen zusammen
       const t = progress - 1
       const x = 25 + (25 * t) // 25% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 3) {
       // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)`
     } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)` // Stay at max size
     }
   }
 
-  // Rechter Kreis Animation - KLEINER GEMACHT
+  // Rechter Kreis Animation - VERGRÖSSERT & OPTIMIERT
   const getRightClipPath = (progress) => {
     if (progress <= 1) {
       // Start: Kreis rechts, nur 50% im Bild
       const t = progress
       const x = 100 - (25 * t) // 100% → 75% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 2) {
       // Kreise kommen zusammen
       const t = progress - 1
       const x = 75 - (25 * t) // 75% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at ${x}% 55%)`
       
     } else if (progress <= 3) {
       // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)`
     } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+      return `circle(min(75vh, 75vw) at 50% 55%)` // Stay at max size
     }
+  }
+
+  // Text animations based on progress
+  const getWelcomeTextOpacity = (progress) => {
+    if (progress <= 0.1) return 0 // Start invisible
+    if (progress <= 0.3) return (progress - 0.1) * 5 // Fade in quickly
+    if (progress <= 1.0) return 1 // Stay visible
+    if (progress <= 1.3) return 1 - ((progress - 1.0) * 3.33) // Fade out
+    return 0 // Then invisible
+  }
+
+  const getFirstTextOpacity = (progress) => {
+    if (progress <= 0.7) return 0 // Start invisible
+    if (progress <= 0.9) return (progress - 0.7) * 5 // Fade in quickly
+    if (progress <= 1.6) return 1 // Stay visible
+    if (progress <= 1.9) return 1 - ((progress - 1.6) * 3.33) // Fade out
+    return 0 // Then invisible
+  }
+
+  const getSecondTextOpacity = (progress) => {
+    if (progress <= 1.5) return 0 // Start invisible
+    if (progress <= 1.7) return (progress - 1.5) * 5 // Fade in quickly
+    if (progress <= 2.4) return 1 // Stay visible
+    if (progress <= 2.7) return 1 - ((progress - 2.4) * 3.33) // Fade out
+    return 0 // Then invisible
   }
 
   return (
@@ -155,6 +180,65 @@ export default function PhotoJourney() {
       >
         <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/10 to-black/30"></div>
       </motion.div>
+      
+      {/* Text overlay in the center */}
+      <div className="fixed inset-0 z-10 pointer-events-none flex items-center justify-center">
+        <div className="max-w-3xl px-6">
+          {/* Welcome text */}
+          <motion.div 
+            className="text-center mb-6"
+            style={{ 
+              opacity: getWelcomeTextOpacity(manualProgress),
+              transform: `translateY(${Math.min(0, (manualProgress - 1.0) * 30)}px)` 
+            }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-lg">
+              Willkommen bei Ihrer Ernährungsberatung
+            </h2>
+            <p className="mt-2 text-xl text-white drop-shadow-md">
+              Entdecken Sie den Weg zu Ihrem Wohlbefinden
+            </p>
+          </motion.div>
+
+          {/* First scrolling text */}
+          <motion.div 
+            className="text-center mb-6"
+            style={{ 
+              opacity: getFirstTextOpacity(manualProgress),
+              transform: `translateY(${Math.min(0, (manualProgress - 1.6) * 30)}px)` 
+            }}
+          >
+            <p className="text-sm sm:text-base font-semibold tracking-wide text-primary-600 bg-white/80 inline-block px-3 py-1 rounded-full">
+              Start Ihrer Reise
+            </p>
+            <h3 className="mt-2 text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
+              Klarheit schaffen
+            </h3>
+            <p className="mt-2 text-gray-100 drop-shadow-md">
+              Wir definieren Ziele – messbar, realistisch und individuell.
+            </p>
+          </motion.div>
+
+          {/* Second scrolling text */}
+          <motion.div 
+            className="text-center mb-6"
+            style={{ 
+              opacity: getSecondTextOpacity(manualProgress),
+              transform: `translateY(${Math.min(0, (manualProgress - 2.4) * 30)}px)` 
+            }}
+          >
+            <p className="text-sm sm:text-base font-semibold tracking-wide text-accent-600 bg-white/80 inline-block px-3 py-1 rounded-full">
+              Ihr Fortschritt
+            </p>
+            <h3 className="mt-2 text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">
+              Persönliche Betreuung
+            </h3>
+            <p className="mt-2 text-gray-100 drop-shadow-md">
+              Gemeinsam auf dem Weg zu einem gesünderen Leben.
+            </p>
+          </motion.div>
+        </div>
+      </div>
       
       <div ref={containerRef} className="relative z-10">
         <div className="h-screen"></div>

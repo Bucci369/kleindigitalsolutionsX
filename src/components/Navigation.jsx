@@ -180,6 +180,17 @@ export default function Navigation({ onNavigate, currentPage }) {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <button 
+                      onClick={() => handleNavigation('demo')} 
+                      className="nav-link bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm hover:from-blue-600 hover:to-purple-700 transition-all"
+                    >
+                      🎨 Animationen
+                    </button>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
               </NavigationMenuList>
             </NavigationMenu>
 
