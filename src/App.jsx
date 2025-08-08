@@ -7,6 +7,7 @@ import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import LeadCapture from './components/LeadCapture'
+import PhotoJourney from './components/PhotoJourney'
 
 // Separate pages
 import CoachingPage from './components/pages/CoachingPage'
@@ -30,6 +31,7 @@ function App() {
       default:
         return (
           <>
+            <PhotoJourney />
             <Hero />
             <Services />
             <About />

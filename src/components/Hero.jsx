@@ -30,6 +30,9 @@ export default function Hero() {
     offset: ['start start', 'end start']
   })
   
+  // Global scroll progress for multi-section photo journey
+  const { scrollYProgress: globalScroll } = useScroll()
+  
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
 
@@ -93,19 +96,6 @@ export default function Hero() {
         {/* Main background */}
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100"></div>
         
-        {/* Organic shape cutout on the right using CSS clip-path */}
-        <div 
-          className="absolute right-0 top-0 w-[60%] h-full"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            clipPath: 'ellipse(80% 45% at 100% 50%)'
-          }}
-        >
-          {/* Subtle overlay */}
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/10 to-black/30"></div>
-        </div>
       </motion.div>
 
       {/* Minimal credentials */}
@@ -124,7 +114,6 @@ export default function Hero() {
           {/* Content Column */}
           <motion.div 
             className="space-y-8"
-            style={{ opacity }}
           >
             {/* Minimal pre-text */}
             <motion.div 
