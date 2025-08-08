@@ -1,0 +1,194 @@
+import { motion, useScroll, useTransform, animate } from 'framer-motion'
+import { useRef, useState, useEffect } from 'react'
+
+export default function PhotoJourney() {
+  const containerRef = useRef(null)
+  const [currentStep, setCurrentStep] = useState(0) 
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [manualProgress, setManualProgress] = useState(0)
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end']
+  })
+
+  // BLOCKIERE SCROLL während Animation!
+  useEffect(() => {
+    if (isAnimating) {
+      document.body.style.overflow = 'hidden' // SCROLL BLOCKIEREN!
+      } else {
+        // 3b: Mitte → Kreis → Verschwindet (zweite Hälfte)
+        const subT = (t - 0.5) * 2 // 0→1
+        
+        if (subT <= 0.6) {
+          // PERFEKTER KREIS - beide Werte werden IDENTISCH!
+          const roundT = subT / 0.6
+          const circleSize = 40 // Kleinere Dimension = echter Kreis
+          const rx = 60 - ((60 - circleSize) * roundT) // 60% → 40%
+          const ry = 40 // bleibt 40% (identisch!)
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          
+        } else {
+          // Kreis wird kleiner und verschwindet
+          const circleT = (subT - 0.6) / 0.4
+          const radius = 40 - (39.5 * circleT) // 40% → 0.5%
+          return `ellipse(${radius}% ${radius}% at 50% 50%)`
+        }
+      }    return () => { document.body.style.overflow = 'auto' }
+  }, [isAnimating])
+
+  // Cinematische Animation
+  const triggerNextStep = async () => {
+    if (isAnimating) return
+    setIsAnimating(true)
+    
+    if (currentStep === 0) {
+      await animate(manualProgress, manualProgress + 1, {
+        duration: 4.5, // LANGSAM!
+        ease: [0.16, 1, 0.3, 1],
+        onUpdate: setManualProgress
+      })
+      setCurrentStep(1)
+      
+    } else if (currentStep === 1) {
+      await animate(manualProgress, manualProgress + 1, {
+        duration: 4.5, // LANGSAM!
+        ease: [0.16, 1, 0.3, 1],
+        onUpdate: setManualProgress
+      })
+      setCurrentStep(2)
+      
+    } else if (currentStep === 2) {
+      await animate(manualProgress, manualProgress + 1, {
+        duration: 6.0, // SEHR LANGSAM!
+        ease: [0.12, 1, 0.25, 1],
+        onUpdate: setManualProgress
+      })
+      setCurrentStep(3)
+    }
+    
+    setIsAnimating(false)
+  }
+
+  // Einfacher Scroll Trigger
+  useEffect(() => {
+    if (isAnimating) return // Während Animation ignoriere Scroll
+    
+    const unsubscribe = scrollYProgress.on('change', (latest) => {
+      if (latest > 0.01 && currentStep < 3) {
+        triggerNextStep() // Triggere nächsten Schritt
+      }
+    })
+    
+    return unsubscribe
+  }, [scrollYProgress, currentStep, isAnimating])
+
+  // **2024/25 BEST PRACTICE** - NUR Ellipsen für nahtlose Animation!
+  // VOLLSTÄNDIGE 3-SCHRITT CINEMATISCHE ANIMATION
+  const getClipPath = (progress) => {
+    if (progress <= 1) {
+      // Schritt 1: Rechte Ellipse → Vollbild
+      const t = progress
+      const rx = 60 + (40 * t) // 60% → 100%
+      const ry = 40 + (60 * t) // 40% → 100%
+      const x = 90 - (40 * t)  // 90% → 50%
+      return `ellipse(${rx}% ${ry}% at ${x}% 50%)`
+      
+    } else if (progress <= 2) {
+      // Schritt 2: Vollbild → Linke Ellipse (PERFEKT GESPIEGELT!)
+      const t = progress - 1
+      const rx = 100 - (40 * t) // 100% → 60% 
+      const ry = 100 - (60 * t) // 100% → 40%
+      const x = 50 - (40 * t)   // 50% → 10%
+      return `ellipse(${rx}% ${ry}% at ${x}% 50%)`
+      
+      } else {
+        // 3b: Mitte → Kreis → Verschwindet (zweite Hälfte)
+        const subT = (t - 0.5) * 2 // 0→1
+        
+        if (subT <= 0.6) {
+          // PERFEKTER KREIS - beide Werte werden IDENTISCH!
+          const roundT = subT / 0.6
+          const circleSize = 40 // Kleinere Dimension = echter Kreis
+          const rx = 60 - ((60 - circleSize) * roundT) // 60% → 40%
+          const ry = 40 // bleibt 40% (identisch!)
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          
+        } else {
+          // Kreis wird kleiner und verschwindet
+          const circleT = (subT - 0.6) / 0.4
+          const radius = 40 - (39.5 * circleT) // 40% → 0.5%
+          return `ellipse(${radius}% ${radius}% at 50% 50%)`
+        }
+      }        
+      } else {
+        // 3b: Mitte → Kreis → Verschwindet (zweite Hälfte)
+        const subT = (t - 0.5) * 2 // 0→1
+        
+        if (subT <= 0.6) {
+          // PERFEKTER KREIS - beide Werte werden IDENTISCH!
+          const roundT = subT / 0.6
+          const circleSize = 40 // Kleinere Dimension = echter Kreis
+          const rx = 60 - ((60 - circleSize) * roundT) // 60% → 40%
+          const ry = 40 // bleibt 40% (identisch!)
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          
+        } else {
+          // Kreis wird kleiner und verschwindet
+          const circleT = (subT - 0.6) / 0.4
+          const radius = 40 - (39.5 * circleT) // 40% → 0.5%
+          return `ellipse(${radius}% ${radius}% at 50% 50%)`
+        }
+      }          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          return `ellipse(${rx}% ${ry}% at 50% 50%)`
+          return `ellipse(${radius}% ${radius}% at 50% 50%)`
+        }
+      }
+    }
+  }
+
+  const clipPathValue = getClipPath(manualProgress)
+
+  return (
+    <>
+      {/* Fixed photo with modernem clip-path */}
+      <motion.div
+        className="fixed top-0 left-0 w-screen h-screen z-0 pointer-events-none"
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          clipPath: clipPathValue
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/10 to-black/30"></div>
+      </motion.div>
+      
+      {/* ULTRATHINK Scroll Container - Cinematisch */}
+      <div ref={containerRef} className="relative z-10">
+        <div className="h-screen"></div> {/* Trigger Zone für Rechts → Vollbild */}
+        <div className="h-screen"></div> {/* Vollbild → Links Zone */}
+        <div className="h-screen"></div> {/* Links → Mitte → Kreis → Verschwindet */}
+        <div className="h-screen"></div> {/* Extra Zone für vollständige Animation */}
+      </div>
+      
+      {/* Debug Info */}
+      <div className="fixed top-4 left-4 z-50 bg-black/80 text-white p-4 rounded text-sm">
+        <div>Step: {currentStep}/3</div>
+        <div>Progress: {manualProgress.toFixed(2)}</div>
+        <div>Animating: {isAnimating ? 'YES - SCROLL BLOCKED' : 'No'}</div>
+        <div>ScrollY: {scrollYProgress.get().toFixed(2)}</div>
+        <div className="text-yellow-300">
+          {currentStep === 0 && '🎬 Scroll um Animation zu starten!'}
+          {currentStep < 3 && isAnimating && '⏳ Animation läuft... Scroll blockiert'}
+          {currentStep === 3 && '✅ Animation beendet'}
+        </div>
+      </div>
+    </>
+  )
+}

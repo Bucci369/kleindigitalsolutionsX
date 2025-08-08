@@ -1,455 +1,269 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 
 export default function Hero() {
-  const ref = useRef(null)
   const [debugMode, setDebugMode] = useState(false)
   const [photoPositions, setPhotoPositions] = useState({
-    photo1: { x: 250, y: 0 },    // left-64 top-0
-    photo2: { x: 262, y: 172 },  // left-64 top-44
-    photo3: { x: 368, y: 0 },    // left-96 top-0
-    photo4: { x: 426, y: 179 }   // left-96 top-44
+    photo1: { x: 50, y: 20 },
+    photo2: { x: 30, y: 60 }
   })
-  const [draggedPhoto, setDraggedPhoto] = useState(null)
-  
-  // Smooth curve controls
-  const [curveControls, setCurveControls] = useState({
-    topRadius: 150, // Obere Rundung
-    bottomRadius: 200, // Untere Rundung
-    leftIndent: 30, // Einbuchtung links
-    centerPoint: 50, // Mitte-Position
-    stretch: 100, // Streckung
-    skew: 0 // Neigung
-  })
-  
-  // Generate unique mask ID
-  const maskId = `organic-mask-${Math.random().toString(36).substr(2, 9)}`
-  
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start']
-  })
-  
-  // Global scroll progress for multi-section photo journey
-  const { scrollYProgress: globalScroll } = useScroll()
-  
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
-
-  const handleMouseDown = (photoId, e) => {
-    if (!debugMode) return
-    e.preventDefault()
-    e.stopPropagation()
-    
-    setDraggedPhoto({
-      id: photoId,
-      startX: e.clientX,
-      startY: e.clientY,
-      startPhotoX: photoPositions[photoId].x,
-      startPhotoY: photoPositions[photoId].y
-    })
-  }
-
-  const handleMouseMove = (e) => {
-    if (!draggedPhoto || !debugMode) return
-
-    const deltaX = e.clientX - draggedPhoto.startX
-    const deltaY = e.clientY - draggedPhoto.startY
-
-    const newX = Math.max(0, Math.min(500, draggedPhoto.startPhotoX + deltaX))
-    const newY = Math.max(0, Math.min(500, draggedPhoto.startPhotoY + deltaY))
-
-    setPhotoPositions(prev => ({
-      ...prev,
-      [draggedPhoto.id]: { x: newX, y: newY }
-    }))
-  }
-
-  const handleMouseUp = () => {
-    setDraggedPhoto(null)
-  }
 
   const convertToTailwind = (x, y) => {
-    const spacing = [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 72, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 384]
-    const getClosest = (value) => spacing.reduce((prev, curr) => Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev)
+    return `left-[${x}%] top-[${y}%]`
+  }
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'd' || e.key === 'D') {
+        setDebugMode(!debugMode)
+      }
+    }
     
-    const closestX = getClosest(x)
-    const closestY = getClosest(y)
-    const spacingMap = { 0:'0', 4:'1', 8:'2', 12:'3', 16:'4', 20:'5', 24:'6', 28:'7', 32:'8', 36:'9', 40:'10', 44:'11', 48:'12', 52:'13', 56:'14', 60:'15', 64:'16', 72:'18', 80:'20', 96:'24', 112:'28', 128:'32', 144:'36', 160:'40', 176:'44', 192:'48', 208:'52', 224:'56', 240:'60', 256:'64', 288:'72', 320:'80', 384:'96' }
-    
-    return `left-${spacingMap[closestX] || '0'} top-${spacingMap[closestY] || '0'}`
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [debugMode])
+
+  // Smooth full-screen transition animations
+  const containerVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.95 
+    },
+    visible: { 
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 1.2,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        staggerChildren: 0.3
+      }
+    }
+  }
+
+  const backgroundVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 1.1 
+    },
+    visible: { 
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 1.5,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
+  }
+
+  const contentVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 50 
+    },
+    visible: { 
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    }
   }
 
   return (
-    <div 
-      ref={ref} 
-      className="hero-minimal relative" 
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+    <motion.div 
+      className="relative bg-gradient-to-br from-primary-50 via-white to-accent-50 overflow-hidden min-h-screen flex items-center"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
-      {/* Modern Background with Organic Cutout */}
+      {/* Floating Background Elements with smooth animation */}
       <motion.div 
-        className="absolute inset-0 z-0 overflow-hidden"
-        style={{ y }}
+        className="absolute inset-0 overflow-hidden"
+        variants={backgroundVariants}
       >
-        {/* Main background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100"></div>
-        
+        <div className="absolute -top-40 -right-32 w-80 h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
+        <div className="absolute -bottom-32 -left-40 w-80 h-80 bg-accent-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
       </motion.div>
 
-      {/* Minimal credentials */}
+      {/* Trust Badge - positioned absolutely */}
       <motion.div 
-        className="absolute top-8 left-8 z-20 text-sm font-medium text-neutral-600 tracking-wide"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+        className="absolute top-6 left-6 z-20 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg"
+        variants={contentVariants}
       >
-        Dr. Anna Müller
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 bg-primary-500 rounded-full animate-pulse"></div>
+          <span className="text-sm font-medium text-gray-700">Dr. Anna Müller • 12+ Jahre Erfahrung</span>
+        </div>
       </motion.div>
 
-      <div className="container-narrow relative z-10 min-h-screen flex items-center">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center w-full lg:ml-[-8rem]">
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="relative z-10 lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center py-12 lg:py-0">
           
-          {/* Content Column */}
+          {/* Left Content Column */}
           <motion.div 
-            className="space-y-8"
+            className="lg:col-span-6 px-4 sm:px-6 lg:px-8"
+            variants={contentVariants}
           >
-            {/* Minimal pre-text */}
-            <motion.div 
-              className="text-sm font-medium text-neutral-500 tracking-[0.2em] uppercase"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Sporternährung
-            </motion.div>
-
-            {/* Powerful headline */}
-            <h1 className="text-hero text-neutral-900 font-display leading-none">
-              <motion.span 
-                className="block"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-              >
-                Leistung
-              </motion.span>
-              <motion.span 
-                className="block text-accent"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-              >
-                neu definiert.
-              </motion.span>
-            </h1>
+            <div className="max-w-2xl mx-auto lg:mx-0">
               
-            {/* Minimal subtitle */}
-            <motion.p 
-              className="text-subtitle max-w-md"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              Evidenzbasierte Ernährungsstrategien für Athleten, die Grenzen überwinden wollen.
-            </motion.p>
+              {/* Emotional Pre-Headline */}
+              <div className="mb-6">
+                <motion.span 
+                  className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary-100 text-primary-800 shadow-sm"
+                  variants={contentVariants}
+                >
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  </svg>
+                  Mehr Energie. Bessere Leistung. Echte Ergebnisse.
+                </motion.span>
+              </div>
 
-
-            {/* Minimal CTAs */}
-            <motion.div 
-              className="flex items-center space-x-8 pt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-            >
-              <a 
-                href="#contact" 
-                className="btn-primary"
+              {/* Main Headline */}
+              <motion.h1 
+                className="text-4xl tracking-tight font-bold text-gray-900 sm:text-5xl lg:text-6xl"
+                variants={contentVariants}
               >
-                Beratung anfragen
-              </a>
-              <a 
-                href="#about" 
-                className="text-sm font-medium text-neutral-700 hover:text-neutral-900 tracking-wide transition-colors duration-300 relative group"
-              >
-                Mehr erfahren
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-neutral-900 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            </motion.div>
-          </motion.div>
-
-
-          {/* Visual Column - Scattered Photos */}
-          <motion.div 
-            className="relative"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            {/* Large number display */}
-            <div className="relative">
+                <motion.span 
+                  className="block mb-2"
+                  variants={contentVariants}
+                >
+                  Sporternährung, die
+                </motion.span>
+                <motion.span 
+                  className="block bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-clip-text text-transparent"
+                  variants={contentVariants}
+                >
+                  Ihr Leben verändert
+                </motion.span>
+              </motion.h1>
               
-              {/* Scattered Photos Container */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-96 h-96 relative">
-                  
-                  {/* Photo 1 - Main center photo */}
-                  <motion.div 
-                    className={`absolute w-64 h-64 transform rotate-2 hover:rotate-0 transition-transform duration-300 z-20 ${debugMode ? 'cursor-move border-2 border-red-400' : 'cursor-pointer'}`}
-                    style={{ 
-                      left: photoPositions.photo1.x, 
-                      top: photoPositions.photo1.y 
-                    }}
-                    initial={{ scale: 0.8, opacity: 0, rotate: 15 }}
-                    animate={{ scale: 1, opacity: 1, rotate: 2 }}
-                    transition={{ delay: 0.8, duration: 0.6 }}
-                    whileHover={{ scale: debugMode ? 1 : 1.05, zIndex: 30 }}
-                    onMouseDown={(e) => handleMouseDown('photo1', e)}
-                  >
-                    <img
-                      className="w-full h-full object-cover photo-polaroid pointer-events-none"
-                      src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Ernährungsberatung"
-                      draggable={false}
-                    />
-                    {debugMode && (
-                      <div className="absolute -top-6 left-0 bg-red-400 text-white px-2 py-1 text-xs font-bold rounded">
-                        Photo 1: {convertToTailwind(photoPositions.photo1.x, photoPositions.photo1.y)}
-                      </div>
-                    )}
-                    <div className="absolute -bottom-1 -right-1 w-8 h-px bg-accent"></div>
-                  </motion.div>
+              {/* Emotional Subheadline */}
+              <motion.p 
+                className="mt-6 text-lg text-gray-700 sm:text-xl leading-relaxed font-medium max-w-xl"
+                variants={contentVariants}
+              >
+                Schluss mit Energielöchern und Plateau-Phasen. 
+                <span className="text-primary-600 font-semibold"> Entdecken Sie, wie die richtige Ernährung Ihre sportlichen Träume Realität werden lässt.</span>
+              </motion.p>
 
-                  {/* Photo 2 - Top right, slightly overlapping */}
-                  <motion.div 
-                    className={`absolute w-48 h-56 transform -rotate-12 hover:rotate-0 transition-transform duration-300 z-15 ${debugMode ? 'cursor-move border-2 border-blue-400' : 'cursor-pointer'}`}
-                    style={{ 
-                      left: photoPositions.photo2.x, 
-                      top: photoPositions.photo2.y 
-                    }}
-                    initial={{ scale: 0.8, opacity: 0, rotate: -25 }}
-                    animate={{ scale: 1, opacity: 1, rotate: -12 }}
-                    transition={{ delay: 1.0, duration: 0.6 }}
-                    whileHover={{ scale: debugMode ? 1 : 1.05, zIndex: 30 }}
-                    onMouseDown={(e) => handleMouseDown('photo2', e)}
-                  >
-                    <img
-                      className="w-full h-full object-cover photo-polaroid pointer-events-none"
-                      src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Gesunde Ernährung"
-                      draggable={false}
-                    />
-                    {debugMode && (
-                      <div className="absolute -top-6 left-0 bg-blue-400 text-white px-2 py-1 text-xs font-bold rounded">
-                        Photo 2: {convertToTailwind(photoPositions.photo2.x, photoPositions.photo2.y)}
-                      </div>
-                    )}
-                  </motion.div>
-
-                  {/* Photo 3 - Large bottom center, base layer */}
-                  <motion.div 
-                    className={`absolute w-80 h-80 rotate-3 hover:rotate-0 transition-transform duration-300 z-0 ${debugMode ? 'cursor-move border-2 border-green-400' : 'cursor-pointer'}`}
-                    style={{ 
-                      left: photoPositions.photo3.x, 
-                      top: photoPositions.photo3.y 
-                    }}
-                    initial={{ scale: 0.8, opacity: 0, rotate: 15 }}
-                    animate={{ scale: 1, opacity: 1, rotate: 3 }}
-                    transition={{ delay: 1.2, duration: 0.6 }}
-                    whileHover={{ scale: debugMode ? 1 : 1.05, zIndex: 30 }}
-                    onMouseDown={(e) => handleMouseDown('photo3', e)}
-                  >
-                    <img
-                      className="w-full h-full object-cover photo-polaroid pointer-events-none"
-                      src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Frische Zutaten"
-                      draggable={false}
-                    />
-                    {debugMode && (
-                      <div className="absolute -top-6 left-0 bg-green-400 text-white px-2 py-1 text-xs font-bold rounded">
-                        Photo 3: {convertToTailwind(photoPositions.photo3.x, photoPositions.photo3.y)}
-                      </div>
-                    )}
-                  </motion.div>
-
-                  {/* Photo 4 - Right side, partially hidden behind main photo */}
-                  <motion.div 
-                    className={`absolute w-44 h-52 transform rotate-18 hover:rotate-0 transition-transform duration-300 z-10 ${debugMode ? 'cursor-move border-2 border-yellow-400' : 'cursor-pointer'}`}
-                    style={{ 
-                      left: photoPositions.photo4.x, 
-                      top: photoPositions.photo4.y 
-                    }}
-                    initial={{ scale: 0.8, opacity: 0, rotate: 30 }}
-                    animate={{ scale: 1, opacity: 1, rotate: 18 }}
-                    transition={{ delay: 1.4, duration: 0.6 }}
-                    whileHover={{ scale: debugMode ? 1 : 1.05, zIndex: 30 }}
-                    onMouseDown={(e) => handleMouseDown('photo4', e)}
-                  >
-                    <img
-                      className="w-full h-full object-cover photo-polaroid pointer-events-none"
-                      src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                      alt="Sporternährung"
-                      draggable={false}
-                    />
-                    {debugMode && (
-                      <div className="absolute -top-6 left-0 bg-yellow-400 text-black px-2 py-1 text-xs font-bold rounded">
-                        Photo 4: {convertToTailwind(photoPositions.photo4.x, photoPositions.photo4.y)}
-                      </div>
-                    )}
-                  </motion.div>
-                  
+              {/* Personal Story Teaser */}
+              <motion.div 
+                className="mt-8 p-6 bg-white/70 backdrop-blur-sm rounded-2xl border border-primary-100 shadow-warm"
+                variants={contentVariants}
+              >
+                <div className="flex items-start space-x-4">
+                  <img 
+                    src="/Dr.mueller.png" 
+                    alt="Dr. Anna Müller" 
+                    className="w-16 h-16 rounded-full object-cover border-3 border-primary-200 shadow-lg flex-shrink-0"
+                  />
+                  <div>
+                    <p className="text-gray-700 italic leading-relaxed">
+                      "Nach 12 Jahren als Sporternährungsexpertin weiß ich: 
+                      <span className="text-primary-700 font-semibold"> Der Unterschied liegt nicht in perfekten Plänen, sondern in der persönlichen Betreuung."</span>
+                    </p>
+                    <p className="text-sm text-gray-500 mt-2 font-medium">— Dr. Anna Müller, promovierte Oecotrophologin</p>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
+
+              {/* CTA Buttons */}
+              <motion.div 
+                className="mt-8 flex flex-col sm:flex-row gap-4"
+                variants={contentVariants}
+              >
+                <a 
+                  href="#contact" 
+                  className="group flex items-center justify-center px-8 py-4 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 hover:scale-105 hover:shadow-glow transition-all duration-300 transform shadow-lg"
+                >
+                  <span>Kostenlose Erstberatung sichern</span>
+                  <svg className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+                <a 
+                  href="#about" 
+                  className="group flex items-center justify-center px-8 py-4 border-2 border-primary-300 text-base font-semibold rounded-xl text-primary-700 bg-white/80 backdrop-blur-sm hover:bg-primary-50 hover:border-primary-400 hover:scale-105 transition-all duration-300 transform shadow-lg"
+                >
+                  <span>Meine Geschichte entdecken</span>
+                  <svg className="ml-3 w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              {/* Social Proof Indicators */}
+              <motion.div 
+                className="mt-12 grid grid-cols-3 gap-6"
+                variants={contentVariants}
+              >
+                <div className="text-center">
+                  <div className="text-2xl lg:text-3xl font-bold text-primary-600">200+</div>
+                  <div className="text-xs lg:text-sm text-gray-600 font-medium">Erfolgreiche Athleten</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl lg:text-3xl font-bold text-accent-600">98%</div>
+                  <div className="text-xs lg:text-sm text-gray-600 font-medium">Zufriedenheitsrate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl lg:text-3xl font-bold text-primary-600">12+</div>
+                  <div className="text-xs lg:text-sm text-gray-600 font-medium">Jahre Expertise</div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Right Image Column */}
+          <motion.div 
+            className="lg:col-span-6 mt-12 lg:mt-0"
+            variants={contentVariants}
+          >
+            <div className="relative">
+              <motion.img
+                className="w-full h-96 lg:h-full lg:min-h-[600px] object-cover rounded-2xl lg:rounded-3xl shadow-2xl"
+                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt="Sporternährung und gesunde Lebensmittel"
+                variants={contentVariants}
+              />
+              
+              {/* Overlay with Success Metrics */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent rounded-2xl lg:rounded-3xl"></div>
+              
+              {/* Floating Success Cards */}
+              <motion.div 
+                className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-2xl max-w-xs"
+                variants={contentVariants}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">Aktuelle Erfolgsgeschichte</p>
+                    <p className="text-xs text-gray-600">Marathon-PB: -8 Minuten durch optimierte Ernährung</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div 
+                className="absolute top-6 right-6 bg-accent-500 text-white p-3 rounded-full shadow-lg"
+                variants={contentVariants}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </motion.div>
             </div>
           </motion.div>
         </div>
-        
-        {/* Scroll indicator */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-neutral-400"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-        >
-          <div className="flex flex-col items-center space-y-2">
-            <span className="text-xs font-medium tracking-wider uppercase">Scroll</span>
-            <div className="w-px h-8 bg-neutral-300"></div>
-          </div>
-        </motion.div>
       </div>
-
-      {/* Enhanced Debug Panel */}
-      {debugMode && (
-        <div className="fixed top-4 right-4 z-50 bg-black text-white p-4 rounded-lg shadow-2xl max-w-sm max-h-[80vh] overflow-y-auto">
-          <h3 className="font-bold mb-4 text-lg">Shape Editor</h3>
-          
-          {/* Smooth Curve Editor */}
-          <div className="mb-4">
-            <h4 className="font-semibold mb-2 text-sm">Smooth Organic Curves:</h4>
-            <div className="space-y-3 text-xs">
-              
-              <div className="bg-gray-800 p-3 rounded">
-                <label className="block text-blue-300 font-semibold mb-2">Top Radius ({curveControls.topRadius})</label>
-                <input
-                  type="range"
-                  min="50"
-                  max="300"
-                  value={curveControls.topRadius}
-                  onChange={(e) => setCurveControls({...curveControls, topRadius: parseInt(e.target.value)})}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="bg-gray-800 p-3 rounded">
-                <label className="block text-green-300 font-semibold mb-2">Bottom Radius ({curveControls.bottomRadius})</label>
-                <input
-                  type="range"
-                  min="50"
-                  max="300"
-                  value={curveControls.bottomRadius}
-                  onChange={(e) => setCurveControls({...curveControls, bottomRadius: parseInt(e.target.value)})}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="bg-gray-800 p-3 rounded">
-                <label className="block text-yellow-300 font-semibold mb-2">Left Indent ({curveControls.leftIndent}%)</label>
-                <input
-                  type="range"
-                  min="10"
-                  max="50"
-                  value={curveControls.leftIndent}
-                  onChange={(e) => setCurveControls({...curveControls, leftIndent: parseInt(e.target.value)})}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="bg-gray-800 p-3 rounded">
-                <label className="block text-purple-300 font-semibold mb-2">Center Point ({curveControls.centerPoint}%)</label>
-                <input
-                  type="range"
-                  min="30"
-                  max="70"
-                  value={curveControls.centerPoint}
-                  onChange={(e) => setCurveControls({...curveControls, centerPoint: parseInt(e.target.value)})}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="bg-gray-800 p-3 rounded">
-                <label className="block text-red-300 font-semibold mb-2">Stretch ({curveControls.stretch}%)</label>
-                <input
-                  type="range"
-                  min="80"
-                  max="120"
-                  value={curveControls.stretch}
-                  onChange={(e) => setCurveControls({...curveControls, stretch: parseInt(e.target.value)})}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="bg-gray-800 p-3 rounded">
-                <label className="block text-orange-300 font-semibold mb-2">Skew ({curveControls.skew}°)</label>
-                <input
-                  type="range"
-                  min="-5"
-                  max="5"
-                  value={curveControls.skew}
-                  onChange={(e) => setCurveControls({...curveControls, skew: parseInt(e.target.value)})}
-                  className="w-full"
-                />
-              </div>
-
-            </div>
-          </div>
-
-          {/* Photo Positions */}
-          <div className="mb-4 border-t border-gray-600 pt-4">
-            <h4 className="font-semibold mb-2 text-sm">Photo Positions:</h4>
-            <div className="text-xs space-y-1">
-              <div>🔴 Photo 1: {convertToTailwind(photoPositions.photo1.x, photoPositions.photo1.y)}</div>
-              <div>🔵 Photo 2: {convertToTailwind(photoPositions.photo2.x, photoPositions.photo2.y)}</div>
-              <div>🟢 Photo 3: {convertToTailwind(photoPositions.photo3.x, photoPositions.photo3.y)}</div>
-              <div>🟡 Photo 4: {convertToTailwind(photoPositions.photo4.x, photoPositions.photo4.y)}</div>
-            </div>
-          </div>
-
-          {/* Export Buttons */}
-          <div className="space-y-2">
-            <button
-              onClick={() => {
-                const svgPath = `M ${100 - curveControls.leftIndent} 0 Q 100 ${curveControls.topRadius/4} 100 ${curveControls.centerPoint} Q 100 ${100 - curveControls.bottomRadius/4} ${100 - curveControls.leftIndent} 100 L 0 100 L 0 0 Z`
-                navigator.clipboard.writeText(`SVG Path: ${svgPath}`)
-                alert('SVG Path copied!')
-              }}
-              className="w-full bg-blue-600 text-white py-2 px-3 rounded text-xs hover:bg-blue-700"
-            >
-              Copy SVG Path
-            </button>
-            <button
-              onClick={() => {
-                const code = Object.entries(photoPositions).map(([key, pos], index) => 
-                  `Photo ${index + 1}: ${convertToTailwind(pos.x, pos.y)} (x:${pos.x}, y:${pos.y})`
-                ).join('\\n')
-                navigator.clipboard.writeText(code)
-                alert('Photo positions copied!')
-              }}
-              className="w-full bg-green-600 text-white py-2 px-3 rounded text-xs hover:bg-green-700"
-            >
-              Copy Photo Positions
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Debug Toggle Button */}
-      <button
-        onClick={() => setDebugMode(!debugMode)}
-        className="fixed bottom-4 right-4 z-50 bg-yellow-400 text-black px-4 py-2 rounded-full font-bold shadow-lg hover:bg-yellow-300 transition-colors"
-      >
-        {debugMode ? 'Exit' : 'Edit'} Debug
-      </button>
-    </div>
+    </motion.div>
   )
 }
