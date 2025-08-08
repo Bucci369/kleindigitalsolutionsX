@@ -1,0 +1,79 @@
+export default function Testimonials() {
+  const testimonials = [
+    {
+      content: "Dr. Müller hat meine Laufleistung durch gezielte Ernährungsoptimierung um 15% verbessert. Ihre wissenschaftliche Herangehensweise und praktischen Tipps haben den Unterschied gemacht.",
+      author: "Michael Schmidt",
+      role: "Marathon-Läufer",
+      location: "München"
+    },
+    {
+      content: "Als Kraftsportlerin war ich skeptisch gegenüber Ernährungsberatung. Anna hat mir geholfen, meine Kraft zu steigern und gleichzeitig meine Regeneration zu verbessern – ohne komplizierte Diäten.",
+      author: "Sarah Weber",
+      role: "Powerlifting-Athletin",
+      location: "Berlin"
+    },
+    {
+      content: "Die Beratung war individuell und praxisnah. Besonders wertvoll waren die konkreten Mahlzeiten-Timing-Strategien für meine Wettkämpfe. Meine Leistung ist seitdem konstanter.",
+      author: "Thomas Braun",
+      role: "Triathlet",
+      location: "Hamburg"
+    },
+    {
+      content: "Dr. Müller versteht es, komplexe Ernährungswissenschaft verständlich zu erklären. Ihre Empfehlungen waren einfach umsetzbar und haben meine Ausdauerleistung deutlich verbessert.",
+      author: "Lisa Hoffmann",
+      role: "Radsportlerin",
+      location: "Stuttgart"
+    },
+    {
+      content: "Nach einer Verletzungspause hat Anna mir geholfen, durch optimierte Ernährung schneller zurück in Form zu kommen. Ihr Ansatz ist wissenschaftlich fundiert und trotzdem alltagstauglich.",
+      author: "David Klein",
+      role: "Fußballspieler",
+      location: "Köln"
+    },
+    {
+      content: "Die Zusammenarbeit mit Dr. Müller hat meine Sicht auf Sporternährung komplett verändert. Weniger ist oft mehr – ihre gezielten Anpassungen haben große Wirkung gezeigt.",
+      author: "Nina Richter",
+      role: "Schwimmerin",
+      location: "Dresden"
+    }
+  ]
+
+  return (
+    <div className="py-20 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Erfolgsgeschichten meiner Athleten
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Erfahren Sie, wie andere Sportler durch evidenzbasierte Ernährungsstrategien 
+            ihre Leistung optimiert haben
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {testimonials.map((testimonial, index) => (
+            <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
+              <blockquote className="text-gray-600 mb-4">
+                "{testimonial.content}"
+              </blockquote>
+              <div className="border-t border-gray-100 pt-4">
+                <div className="font-semibold text-gray-900">{testimonial.author}</div>
+                <div className="text-sm text-gray-500">{testimonial.role}</div>
+                <div className="text-sm text-gray-400">{testimonial.location}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <div className="inline-flex items-center space-x-4 text-sm text-gray-500">
+            <span>Alle Testimonials basieren auf individuellen Erfahrungen</span>
+            <span>•</span>
+            <span>Ergebnisse können variieren</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

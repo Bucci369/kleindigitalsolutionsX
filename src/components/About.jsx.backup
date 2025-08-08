@@ -1,0 +1,221 @@
+export default function About() {
+  return (
+    <div id="about" className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-start">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-6">
+              Dr. Anna Müller
+            </h2>
+            <div className="prose prose-lg text-gray-600 max-w-none">
+              <p className="mb-6">
+                Als promovierte Oecotrophologin und zertifizierte Ernährungsberaterin bringe ich über 
+                12 Jahre Erfahrung in der evidenzbasierten Sporternährung mit. Meine Leidenschaft gilt 
+                der Optimierung der sportlichen Leistung durch wissenschaftlich fundierte Ernährungsstrategien.
+              </p>
+              <p className="mb-6">
+                Mein Ansatz basiert auf aktueller Forschung und individueller Anpassung. Ich glaube daran, 
+                dass nachhaltige Ernährungsveränderungen nur durch Verständnis und praktische Umsetzbarkeit 
+                im Alltag funktionieren – ohne Verzicht, dafür mit optimaler Leistung.
+              </p>
+              <p>
+                In meiner Praxis begleite ich Athleten aller Leistungsklassen: vom ambitionierten 
+                Hobbysportler bis zum Profi-Athleten. Dabei liegt mein Fokus auf der individuellen 
+                Betreuung und der Entwicklung nachhaltiger Strategien.
+              </p>
+            </div>
+          </div>
+          <div className="mt-10 lg:mt-0">
+            <img
+              className="rounded-lg"
+              src="/Dr.mueller.png"
+              alt="Dr. Anna Müller, Ernährungsberaterin"
+            />
+          </div>
+        </div>
+        
+        <div className="mt-20">
+          <h3 className="text-2xl font-bold text-gray-900 mb-10 text-center">Qualifikationen & Expertise</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Promotion</h4>
+              <p className="text-gray-600">Dr. rer. nat. Ernährungswissenschaften, Universität München</p>
+            </div>
+            <div className="text-center">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Zertifizierung</h4>
+              <p className="text-gray-600">VDD-zertifizierte Ernährungsberaterin/DGE</p>
+            </div>
+            <div className="text-center">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Mitgliedschaften</h4>
+              <p className="text-gray-600">VDD, DGE, DGSP (Deutsche Gesellschaft für Sportmedizin)</p>
+            </div>
+            <div className="text-center">
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Fortbildungen</h4>
+              <p className="text-gray-600">Regelmäßige Weiterbildungen in Sporternährung und Metabolismus</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-16 bg-gray-50 rounded-lg p-8">
+          <h3 className="text-xl font-semibold text-gray-900 mb-4">Meine Philosophie</h3>
+          <blockquote className="text-lg text-gray-600 italic">
+            "Optimale Sporternährung bedeutet nicht Perfektion, sondern die richtige Balance zwischen 
+            wissenschaftlicher Evidenz und praktischer Umsetzbarkeit. Jeder Athlet ist individuell – 
+            und so sollte auch seine Ernährungsstrategie sein."
+          </blockquote>
+        </div>
+
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          <div>
+            <div className="text-3xl font-bold text-gray-900">200+</div>
+            <div className="text-gray-600">Betreute Athleten</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-gray-900">12</div>
+            <div className="text-gray-600">Jahre Erfahrung</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-gray-900">25+</div>
+            <div className="text-gray-600">Sportarten</div>
+          </div>
+        </div>
+
+        <div className="mt-16 bg-white rounded-lg border border-gray-200 p-8">
+          <h3 className="text-xl font-semibold text-gray-900 mb-6 text-center">Persönliches</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="text-center">
+              <h4 className="font-medium text-gray-900 mb-2">Lieblings-Pre-Workout-Snack</h4>
+              <p className="text-gray-600">Banane mit Mandelbutter und einer Prise Zimt</p>
+            </div>
+            <div className="text-center">
+              <h4 className="font-medium text-gray-900 mb-2">Sportliche Leidenschaft</h4>
+              <p className="text-gray-600">Triathlon - selbst aktive Athletin seit 8 Jahren</p>
+            </div>
+            <div className="text-center">
+              <h4 className="font-medium text-gray-900 mb-2">Überraschendes Talent</h4>
+              <p className="text-gray-600">Kann 37 verschiedene Getreidesorten nur durch Riechen erkennen</p>
+            </div>
+            <div className="text-center">
+              <h4 className="font-medium text-gray-900 mb-2">Reise-Destination für Inspiration</h4>
+              <p className="text-gray-600">Japan - für die Balance von Tradition und Präzision in der Ernährung</p>
+            </div>
+            <div className="text-center">
+              <h4 className="font-medium text-gray-900 mb-2">Morgenritual</h4>
+              <p className="text-gray-600">5:30 Uhr Lauf, gefolgt von grünem Tee und 10 Min. Meditation</p>
+            </div>
+            <div className="text-center">
+              <h4 className="font-medium text-gray-900 mb-2">Guilty Pleasure</h4>
+              <p className="text-gray-600">Dunkle Schokolade (85% Kakao) - täglich 2 Stücke um 15:30 Uhr</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Social Media Integration */}
+        <div className="mt-16">
+          <h3 className="text-xl font-semibold text-gray-900 mb-8 text-center">Folgen Sie mir</h3>
+          
+          {/* Instagram Feed Simulation */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center mb-6">
+              <div className="w-8 h-8 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </div>
+              <span className="font-semibold text-gray-900">@dr.anna.mueller.nutrition</span>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                  alt="Instagram Post 1" 
+                  className="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer"
+                />
+              </div>
+              <div className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                  alt="Instagram Post 2" 
+                  className="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer"
+                />
+              </div>
+              <div className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                  alt="Instagram Post 3" 
+                  className="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer"
+                />
+              </div>
+              <div className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                  alt="Instagram Post 4" 
+                  className="w-full h-full object-cover hover:opacity-90 transition-opacity cursor-pointer"
+                />
+              </div>
+            </div>
+            
+            <div className="text-center mt-4">
+              <a 
+                href="https://instagram.com/dr.anna.mueller.nutrition" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Auf Instagram folgen →
+              </a>
+            </div>
+          </div>
+
+          {/* YouTube Channel */}
+          <div>
+            <div className="flex items-center justify-center mb-6">
+              <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center mr-3">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <span className="font-semibold text-gray-900">Sporternährung Science</span>
+            </div>
+            
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h4 className="font-medium text-gray-900 mb-2">Neueste Videos</h4>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="w-20 h-14 bg-gray-300 rounded flex items-center justify-center flex-shrink-0">
+                    <span className="text-gray-600 text-xs">▶</span>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-medium text-gray-900">Pre-Workout Nutrition: Was wirklich funktioniert</h5>
+                    <p className="text-xs text-gray-500">vor 3 Tagen • 12.4K Aufrufe</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-20 h-14 bg-gray-300 rounded flex items-center justify-center flex-shrink-0">
+                    <span className="text-gray-600 text-xs">▶</span>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-medium text-gray-900">Protein-Timing: Mythos oder Wissenschaft?</h5>
+                    <p className="text-xs text-gray-500">vor 1 Woche • 8.7K Aufrufe</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-center mt-4">
+                <a 
+                  href="https://youtube.com/@sporternaehrungscience" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
+                >
+                  YouTube-Kanal besuchen →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
