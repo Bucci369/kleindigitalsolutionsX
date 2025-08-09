@@ -92,7 +92,7 @@ export default function GoogleReviews() {
             <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                  <div className="w-10 h-10 bg-accent-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                     {review.author.charAt(0)}
                   </div>
                   <div className="ml-3">

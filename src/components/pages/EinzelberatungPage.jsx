@@ -317,7 +317,7 @@ export default function EinzelberatungPage() {
       {/* Kosteninfo */}
       <div className="py-16 bg-white/70">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
+          <div className="bg-accent-50 rounded-2xl p-8 border border-accent-200">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               Kostenübernahme durch die Krankenkasse
             </h3>

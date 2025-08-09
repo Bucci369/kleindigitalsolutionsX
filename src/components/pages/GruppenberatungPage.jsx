@@ -187,10 +187,10 @@ export default function GruppenberatungPage() {
                   </div>
                 )}
                 
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="mt-6 p-4 bg-accent-50 rounded-lg border border-accent-200">
                   <div className="flex items-start">
-                    <Info className="w-5 h-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
-                    <div className="text-sm text-blue-800">
+                    <Info className="w-5 h-5 text-accent-600 mt-0.5 mr-3 flex-shrink-0" />
+                    <div className="text-sm text-accent-700">
                       <strong>Hinweis:</strong> Der BMI ist nur ein Orientierungswert. 
                       Für eine umfassende Beurteilung Ihres Gesundheitszustandes empfehlen wir eine persönliche Beratung.
                     </div>

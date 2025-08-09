@@ -10,7 +10,7 @@ export function MorphingTextJourney() {
 
   const steps = [
     { text: "KLARHEIT", color: "from-emerald-400 to-teal-600" },
-    { text: "VERSTEHEN", color: "from-blue-400 to-indigo-600" },
+  { text: "VERSTEHEN", color: "from-emerald-400 to-teal-600" },
     { text: "HANDELN", color: "from-purple-400 to-pink-600" },
     { text: "ERFOLG", color: "from-orange-400 to-red-600" }
   ]
@@ -50,7 +50,7 @@ export function MorphingTextJourney() {
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full"
+              className="absolute w-2 h-2 bg-gradient-to-r from-emerald-300 to-teal-500 rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -142,7 +142,7 @@ export function LiquidMorphJourney() {
   const { scrollYProgress } = useScroll({ target: containerRef })
 
   return (
-    <div ref={containerRef} className="relative min-h-[500vh] bg-gradient-to-b from-blue-50 to-green-50">
+  <div ref={containerRef} className="relative min-h-[500vh] bg-gradient-to-b from-accent-50 to-primary-50">
       <div className="sticky top-0 h-screen overflow-hidden">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 800">
           {/* Flüssige Formen */}
@@ -169,8 +169,8 @@ export function LiquidMorphJourney() {
 
           <defs>
             <linearGradient id="liquidGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#58ac81" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#3d8d66" stopOpacity="0.3" />
             </linearGradient>
             <linearGradient id="liquidGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#10b981" stopOpacity="0.6" />
@@ -571,7 +571,7 @@ export function ParticleExplosionJourney() {
           {[
             { text: "ENERGIE", delay: 0.2, color: "text-yellow-400" },
             { text: "KRAFT", delay: 0.4, color: "text-red-400" },
-            { text: "LEBEN", delay: 0.6, color: "text-blue-400" }
+            { text: "LEBEN", delay: 0.6, color: "text-accent-400" }
           ].map((item, i) => (
             <motion.div
               key={i}

@@ -42,83 +42,107 @@ export default function Hero() {
   const newTextOpacity = useTransform(effectiveProgress,[0,0.2,0.3],[0,0,1])
   const newTextX = useTransform(effectiveProgress,[0,0.2,0.3],[100,100,0])
   
-  // CTA Button - erscheint ganz am Ende
-  const ctaOpacity = useTransform(effectiveProgress,[0,0.45,0.5],[0,0,1])
-  const ctaY = useTransform(effectiveProgress,[0,0.45,0.5],[50,50,0])
   
   // Linker Text verschwindet wenn Bild nach links wandert
   const leftTextOpacity = useTransform(effectiveProgress,[0,0.2,0.3],[1,1,0])
   const [mountIntro, setMountIntro] = useState(true)
   const [isInHero, setIsInHero] = useState(true) // Track if user is in hero section
 
-  // --- Auto Scroll State ---
-  const [isAutoScrolling, setIsAutoScrolling] = useState(false) // programmatic handoff scroll
-  const [hasInteracted, setHasInteracted] = useState(false) // hat user ersten Impuls gegeben
-  const touchStartY = useRef(0)
-  const handoffDoneRef = useRef(false)
+  // Auto-Scroll Logik entfällt für sanftes Scroll-Snap
   const cancelRef = useRef(false)
 
   const startIntro = () => {
     if (introPlaying || introDone || cancelRef.current) return
     setIntroPlaying(true)
-    // Motion preferences respektieren
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const duration = reduce ? 0.01 : 6.5 // Viel längere Duration für eleganten Übergang
-    const controls = animate(introProgress, 0.5, { // STOPPT BEI 0.5 = VOLLBILD 
-      duration: duration * 0.5, // Viel kürzere Duration
+    const duration = reduce ? 0.01 : 6.5
+    lockScroll(true)
+    const controls = animate(introProgress, 0.5, {
+      duration: duration * 0.5,
       ease: [0.25, 0.1, 0.25, 1],
       onUpdate: v => {
-      if (v >= 0.4 && mountIntro) setMountIntro(false) // Text schnell weg bei 40%
-    }, onComplete: () => {
-      setIntroPlaying(false)
-      setIntroDone(true)
-      lockBody(false)
-    } })
+        if (v >= 0.4 && mountIntro) setMountIntro(false)
+      },
+      onComplete: () => {
+        setIntroPlaying(false)
+        setIntroDone(true)
+        lockScroll(false)
+      }
+    })
     return () => controls.stop()
   }
 
-
-  const lockBody = (lock) => {
-    // Scrollbar bleibt immer sichtbar - kein overflow hidden mehr
-    // Dadurch verschiebt sich die Website nicht
+  // --- Robuster Scroll-Lock (body fixed) ---
+  const scrollLockRef = useRef({ active: false, y: 0, prev: {} })
+  const lockScroll = (lock) => {
+    if (lock && !scrollLockRef.current.active) {
+      const y = window.scrollY
+      scrollLockRef.current.y = y
+      scrollLockRef.current.prev = {
+        position: document.body.style.position,
+        top: document.body.style.top,
+        width: document.body.style.width,
+        overflow: document.body.style.overflow,
+        paddingRight: document.body.style.paddingRight,
+        overscrollBehavior: document.body.style.overscrollBehavior
+      }
+      const scrollBarComp = window.innerWidth - document.documentElement.clientWidth
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${y}px`
+      document.body.style.width = '100%'
+      document.body.style.overflow = 'hidden'
+      document.body.style.overscrollBehavior = 'none'
+      if (scrollBarComp > 0) document.body.style.paddingRight = scrollBarComp + 'px'
+      scrollLockRef.current.active = true
+    } else if (!lock && scrollLockRef.current.active) {
+      const { y, prev } = scrollLockRef.current
+      document.body.style.position = prev.position
+      document.body.style.top = prev.top
+      document.body.style.width = prev.width
+      document.body.style.overflow = prev.overflow
+      document.body.style.paddingRight = prev.paddingRight
+      document.body.style.overscrollBehavior = prev.overscrollBehavior
+      scrollLockRef.current.active = false
+      window.scrollTo(0, y)
+    }
   }
+  useEffect(() => () => lockScroll(false), [])
 
+  // Erste Interaktion (Wheel/Touch/Key) sofort abfangen & Intro starten OHNE dass Seite scrollt
   useEffect(() => {
-    // NUR wenn User im Hero-Bereich ist
-    const initialScroll = window.scrollY
-    const heroHeight = window.innerHeight
-    if (initialScroll > heroHeight * 0.3) {
-      return // User ist nicht im Hero
-    }
-
-    const beginIfNeeded = () => {
-      if (!hasInteracted && !introPlaying && !introDone) {
-        setHasInteracted(true)
-        startIntro()
-      }
-    }
-
-    const onWheel = (e) => {
-      const currentScroll = window.scrollY
-      // NUR im Hero blockieren, nicht auf der ganzen Website
-      if (currentScroll > heroHeight) return // User ist aus Hero raus - nicht blockieren
-      
-      if (introDone) return // Animation fertig - nicht blockieren
-      if (introPlaying) { 
-        e.preventDefault() // NUR während Animation blockieren
-        return 
-      }
-      if (e.deltaY > 0) { 
+    if (introDone) return
+    const startAndBlock = (e) => {
+      if (introDone) return
+      // Scroll keys
+      const scrollKeys = ['ArrowDown','ArrowUp','PageDown','PageUp','Home','End','Space',' ']
+      if (e.type === 'keydown' && !scrollKeys.includes(e.code) && !scrollKeys.includes(e.key)) return
+      if (!introPlaying) startIntro()
+      if (e.cancelable !== false) {
         e.preventDefault()
-        beginIfNeeded()
+        e.stopPropagation()
       }
     }
-
-    window.addEventListener('wheel', onWheel, { passive: false })
-    return () => {
-      window.removeEventListener('wheel', onWheel)
+    const blockWhilePlaying = (e) => {
+      if (introPlaying && e.cancelable !== false) {
+        e.preventDefault(); e.stopPropagation()
+      }
     }
-  }, [isAutoScrolling, introPlaying, introDone])
+    window.addEventListener('wheel', startAndBlock, { passive: false })
+    window.addEventListener('touchmove', startAndBlock, { passive: false })
+    window.addEventListener('keydown', startAndBlock, { passive: false })
+    // Falls Benutzer danach weiter versucht
+    window.addEventListener('wheel', blockWhilePlaying, { passive: false })
+    window.addEventListener('touchmove', blockWhilePlaying, { passive: false })
+    window.addEventListener('keydown', blockWhilePlaying, { passive: false })
+    return () => {
+      window.removeEventListener('wheel', startAndBlock)
+      window.removeEventListener('touchmove', startAndBlock)
+      window.removeEventListener('keydown', startAndBlock)
+      window.removeEventListener('wheel', blockWhilePlaying)
+      window.removeEventListener('touchmove', blockWhilePlaying)
+      window.removeEventListener('keydown', blockWhilePlaying)
+    }
+  }, [introPlaying, introDone])
 
   // Falls User doch ganz normal oben landet und  nicht interagiert: kein Autostart -> wartet auf Scroll
 
@@ -133,108 +157,17 @@ export default function Hero() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Automatisches Scrollen zur zweiten Section nach Intro - NUR im Hero-Bereich
-  useEffect(() => {
-    // Wenn User nicht im Hero-Bereich ist, SOFORT abbrechen - egal ob introDone oder nicht
-    const initialScroll = window.scrollY
-    const heroHeight = window.innerHeight
-    if (initialScroll > heroHeight * 0.3) {
-      return // User ist zu weit unten, KEINE Hero-Animation
-    }
-    
-    if (!introDone) return
-    
-    let hasAutoScrolled = false
-    let isAnimating = false
-    
-    const blockScroll = (e) => {
-      if (isAnimating) {
-        e.preventDefault()
-        e.stopPropagation()
-        return false
-      }
-    }
-    
-    const handleScroll = (e) => {
-      if (hasAutoScrolled || isAnimating) return
-      
-      const scrolled = window.scrollY
-      const heroHeight = window.innerHeight
-      
-      // NUR wenn User im oberen Hero-Bereich ist
-      if (scrolled >= 0 && scrolled <= heroHeight && scrolled <= heroHeight * 0.8) {
-        e.preventDefault()
-        hasAutoScrolled = true
-        isAnimating = true
-        
-        // Scroll blockieren während Animation zur zweiten Section
-        const blockScroll = (e) => {
-          if (isAnimating) {
-            e.preventDefault()
-            e.stopPropagation()
-          }
-        }
-        
-        window.addEventListener('wheel', blockScroll, { passive: false })
-        window.addEventListener('touchmove', blockScroll, { passive: false })
-        window.addEventListener('keydown', blockScroll, { passive: false })
-        
-        const heroEl = ref.current
-        if (!heroEl) return
-        const next = heroEl.nextElementSibling
-        if (!next) return
-        
-        const targetY = next.getBoundingClientRect().top + window.scrollY
-        const startY = window.scrollY
-        const distance = targetY - startY
-        const duration = 2500
-        const startTime = performance.now()
-        
-        const easeInOut = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-        
-        const animateScroll = (currentTime) => {
-          const elapsed = currentTime - startTime
-          const progress = Math.min(elapsed / duration, 1)
-          const easedProgress = easeInOut(progress)
-          
-          const newY = Math.round(startY + distance * easedProgress)
-          const currentY = Math.round(window.scrollY)
-          if (newY !== currentY) {
-            window.scrollTo({ top: newY, behavior: 'instant' })
-          }
-          
-          if (progress < 1) {
-            requestAnimationFrame(animateScroll)
-          } else {
-            // Animation fertig - Scroll wieder freigeben
-            isAnimating = false
-            window.removeEventListener('wheel', blockScroll)
-            window.removeEventListener('touchmove', blockScroll)
-            window.removeEventListener('keydown', blockScroll)
-          }
-        }
-        
-        requestAnimationFrame(animateScroll)
-      }
-    }
-    
-    window.addEventListener('scroll', handleScroll, { passive: false })
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [introDone])
+  // Kein nachträgliches Auto-Weiter-Scrollen – Scroll-Snap übernimmt sanften Übergang
 
   // Keine Rückwärts-Animation mehr
 
   return (
   <section
       ref={ref}
-      className="relative w-full h-[105vh]"
+      className="relative w-full min-h-screen snap-start"
       aria-label="Landing Hero"
-      data-autoscroll={isAutoScrolling ? 'locking' : 'idle'}
+      data-autoscroll="none"
     >
-  {/* Spacer für korrekte Positionierung beim Seitenaufruf */}
-  <div className="h-[105vh]" />
       <motion.div
         className="absolute inset-0 z-10 overflow-hidden bg-transparent"
         style={{ clipPath, WebkitClipPath: clipPath, opacity: imageOpacity }}
@@ -362,52 +295,27 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* CTA Button - erscheint erst am Ende der Animation */}
-      <motion.div
-        className="absolute bottom-20 left-1/2 z-30"
-        style={{ 
-          opacity: ctaOpacity, 
-          y: ctaY, 
-          x: '-50%'
-        }}
-      >
-        <a
-          href="#contact"
-          className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-md hover:scale-102 text-base"
-        >
-          Kostenlose Beratung starten
-          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-      </motion.div>
-
-      {/* CTA Button - erscheint erst am Ende der Animation */}
-      <motion.div
-        className="absolute bottom-20 left-1/2 z-30"
-        style={{ 
-          opacity: ctaOpacity, 
-          y: ctaY, 
-          x: '-50%'
-        }}
-      >
-        <a
-          href="#contact"
-          className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-md hover:scale-102 text-base"
-        >
-          Kostenlose Beratung starten
-          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-      </motion.div>
 
       {/* Skip Button / Progress Indicator - nur sichtbar wenn im Hero */}
       {!introPlaying && !introDone && isInHero && (
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
-          <div className="text-[10px] tracking-widest text-neutral-500 uppercase">Scroll um zu starten</div>
-          <div className="w-5 h-8 rounded-full border border-neutral-400 relative overflow-hidden">
-            <div className="absolute left-1/2 -translate-x-1/2 w-1 h-2 rounded-full bg-neutral-400 animate-pulse top-1"></div>
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 select-none">
+          {/* Basis Layer (für helle rechte Seite am Anfang & finale Phase rechts) */}
+          <div className="relative flex flex-col items-center">
+            <div className="text-[10px] tracking-widest uppercase font-medium text-neutral-600">Scroll um zu starten</div>
+            <div className="mt-1 w-6 h-10 rounded-full border border-neutral-500/70 relative overflow-hidden">
+              <div className="absolute left-1/2 -translate-x-1/2 w-1 h-2 rounded-full bg-neutral-500/70 animate-pulse top-1"></div>
+            </div>
+            {/* Overlay Layer (weiß auf Bild) */}
+            <motion.div
+              aria-hidden
+              className="absolute inset-0 flex flex-col items-center"
+              style={{ clipPath, WebkitClipPath: clipPath }}
+            >
+              <div className="text-[10px] tracking-widest uppercase font-medium text-white drop-shadow-md">Scroll um zu starten</div>
+              <div className="mt-1 w-6 h-10 rounded-full border border-white/85 relative overflow-hidden backdrop-blur-[1px]">
+                <div className="absolute left-1/2 -translate-x-1/2 w-1 h-2 rounded-full bg-white/85 animate-pulse top-1"></div>
+              </div>
+            </motion.div>
           </div>
         </div>
       )}

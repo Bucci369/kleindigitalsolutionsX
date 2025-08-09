@@ -57,7 +57,7 @@ export default function AnimationDemo() {
               onClick={() => setActiveAnimation(animation.id)}
               className={`block w-full text-left p-2 rounded text-sm transition-all ${
                 activeAnimation === animation.id
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-accent-600 text-white'
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               }`}
             >

@@ -34,12 +34,18 @@
 
 html {
   font-family: var(--font-body);
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
+  /* Aktivierbares Scroll-Snap (sanft). Falls nicht gewünscht: Klasse .has-scroll-snap nur auf Wrapper setzen */
+  &.has-scroll-snap, &.has-scroll-snap body {
+    scroll-snap-type: y proximity;
+  }
 }
 
 body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
+/* Unified heading typography */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; }
 
 @layer utilities {
   /* Sophisticated glass effects */
@@ -181,7 +187,7 @@ body {
 
   /* Normal scrolling */
   html {
-    scroll-behavior: auto;
+  scroll-behavior: smooth;
   }
 
   /* Minimal scrollbar */

@@ -369,13 +369,13 @@ export default function BIAMessungPage() {
 
                 <div>
                   <h3 className="text-2xl font-semibold text-gray-900 mb-6">Zusätzliche Hinweise</h3>
-                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-200">
-                    <p className="text-blue-800 leading-relaxed mb-4">
+          <div className="bg-accent-50 rounded-2xl p-6 border border-accent-200">
+            <p className="text-accent-700 leading-relaxed mb-4">
                       Mögliche Erkrankungen wie Magen-Darm-Infekte oder Grippe, die 
                       unmittelbar vor einer BIA-Messung auftreten, können Fehler in 
                       der Bestimmung der Körperzusammensetzung hervorrufen.
                     </p>
-                    <p className="text-blue-800 leading-relaxed">
+                    <p className="text-accent-700 leading-relaxed">
                       Bei Unsicherheiten über Ihre Eignung für die Messung sprechen 
                       Sie uns gerne an. Wir beraten Sie individuell.
                     </p>
