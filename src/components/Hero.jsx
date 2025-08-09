@@ -1,214 +1,60 @@
-import { useState, useEffect, useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
 
+// Scroll-basiertes Landing Hero (ehemals PhotoJourney)
 export default function Hero() {
-  const [debugMode, setDebugMode] = useState(false)
-  const [photoPositions, setPhotoPositions] = useState({
-    photo1: { x: 50, y: 20 },
-    photo2: { x: 30, y: 60 }
-  })
-
-  const convertToTailwind = (x, y) => {
-    return `left-[${x}%] top-[${y}%]`
-  }
-
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === 'd' || e.key === 'D') {
-        setDebugMode(!debugMode)
-      }
-    }
-    
-    window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [debugMode])
-
-  // Alle Eintrittsanimationen deaktiviert (statische Initialansicht)
-
-  return (
-  <div className="relative z-30 bg-gradient-to-br from-primary-50 via-white to-accent-50 overflow-hidden min-h-screen flex items-center">
-  {/* Solide Hintergrundebene um das fixe Intro komplett zu überdecken */}
-  <div className="absolute inset-0 bg-white pointer-events-none" aria-hidden="true"></div>
-      {/* Floating Background Elements with smooth animation */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-32 w-80 h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
-        <div className="absolute -bottom-32 -left-40 w-80 h-80 bg-accent-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-      </div>
-
-  {/* Trust Badge entfernt gemäß Wunsch */}
-
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="relative z-10 lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center py-12 lg:py-0">
-          
-          {/* Left Content Column */}
-          <div className="lg:col-span-6 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mx-auto lg:mx-0">
-              
-              {/* Emotional Pre-Headline */}
-              <div className="mb-6">
-                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary-100 text-primary-800 shadow-sm">
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-                  </svg>
-                  Mehr Energie. Bessere Leistung. Echte Ergebnisse.
-                </span>
-              </div>
-
-              {/* Main Headline */}
-              <h1 className="text-4xl tracking-tight font-bold text-gray-900 sm:text-5xl lg:text-6xl">
-                <span className="block mb-2">
-                  Sporternährung, die
-                </span>
-                <span className="block text-gray-900">
-                  Ihr Leben verändert
-                </span>
-              </h1>
-              
-              {/* Emotional Subheadline */}
-              <p className="mt-6 text-lg text-gray-700 sm:text-xl leading-relaxed font-medium max-w-xl">
-                Schluss mit Energielöchern und Plateau-Phasen. 
-                <span className="text-primary-600 font-semibold"> Entdecken Sie, wie die richtige Ernährung Ihre sportlichen Träume Realität werden lässt.</span>
-              </p>
-
-              {/* Personal Story Teaser mit Typewriter */}
-              <TypewriterQuote />
-
-              {/* CTA Buttons entfernt */}
-
-              {/* Social Proof Indicators */}
-        <div className="mt-12 grid grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-2xl lg:text-3xl font-bold text-primary-600">200+</div>
-                  <div className="text-xs lg:text-sm text-gray-600 font-medium">Erfolgreiche Athleten</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl lg:text-3xl font-bold text-accent-600">98%</div>
-                  <div className="text-xs lg:text-sm text-gray-600 font-medium">Zufriedenheitsrate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl lg:text-3xl font-bold text-primary-600">12+</div>
-                  <div className="text-xs lg:text-sm text-gray-600 font-medium">Jahre Expertise</div>
-                </div>
-        </div>
-            </div>
-      </div>
-
-          {/* Right Image Column */}
-          <div className="lg:col-span-6 mt-12 lg:mt-0">
-            <div className="relative">
-              {/* Portrait / Hero Image replaced: now using local optimized assets */}
-              <picture>
-                {/* Optional smaller source for mobile (could be a cropped variant if added later) */}
-                {/* <source srcSet="/Frau-mobile.webp" media="(max-width: 640px)" /> */}
-                <source srcSet="/Frau.webp" type="image/webp" />
-                <img
-                  className="w-full h-96 lg:h-full lg:min-h-[600px] object-cover rounded-2xl lg:rounded-3xl shadow-2xl"
-                  src="/Frau.webp"
-                  alt="Portrait von Dr. Anna Müller – Sporternährung und gesunde Ernährung"
-                  loading="eager"
-                  fetchpriority="high"
-                />
-              </picture>
-              
-              {/* Overlay with Success Metrics */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent rounded-2xl lg:rounded-3xl"></div>
-              
-              {/* Floating Success Cards */}
-              <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-2xl max-w-xs">
-                <div className="flex items-center space-x-3">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">Aktuelle Erfolgsgeschichte</p>
-                    <p className="text-xs text-gray-600">Marathon-PB: -8 Minuten durch optimierte Ernährung</p>
-                  </div>
-                </div>
-              </div>
-
-        <div className="absolute top-6 right-6 bg-accent-500 text-white p-3 rounded-full shadow-lg">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-        </div>
-            </div>
-      </div>
-        </div>
-      </div>
-  </div>
-  )
-}
-
-function TypewriterQuote() {
-  const fullText = '"Nach 12 Jahren als Sporternährungsexpertin weiß ich: Der Unterschied liegt nicht in perfekten Plänen, sondern in der persönlichen Betreuung."'
-  const author = '— Dr. Anna Müller, promovierte Oecotrophologin'
-  const [displayed, setDisplayed] = useState('')
-  const [done, setDone] = useState(false)
-  const [started, setStarted] = useState(false)
   const ref = useRef(null)
-  const idx = useRef(0)
-  const timer = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start','end start'] })
 
-  // Start when ~30% sichtbarkeit
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) setStarted(true) })
-    }, { threshold: 0.3 })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
+  const clipPath = useTransform(scrollYProgress,[0,0.6,1],[
+    'ellipse(60vmin 90vmin at 85% 50%)',
+    'ellipse(140vmin 140vmin at 55% 50%)',
+    'ellipse(160vmin 160vmin at 50% 50%)'
+  ])
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.75, 0.82], [1, 1, 0])
+  const [mountIntro, setMountIntro] = useState(true)
+  const fadeOpacity = useTransform(scrollYProgress, [0, 0.04, 0.12, 0.14], [1, 1, 0.15, 0])
+  const translateY = useTransform(scrollYProgress, [0, 0.14], [0, -46])
+  const blur = useTransform(scrollYProgress, [0, 0.14], ['blur(0px)', 'blur(7px)'])
+  const backdrop = useTransform(scrollYProgress, [0, 0.14], ['rgba(255,255,255,0.55)', 'rgba(255,255,255,0.0)'])
 
   useEffect(() => {
-    if (!started || done) return
-    const step = () => {
-      if (idx.current < fullText.length) {
-        setDisplayed(prev => prev + fullText.charAt(idx.current))
-        idx.current += 1
-        timer.current = setTimeout(step, 22)
-      } else {
-        setDone(true)
-      }
-    }
-    timer.current = setTimeout(step, 200)
-    return () => timer.current && clearTimeout(timer.current)
-  }, [started, done, fullText])
+    const unsubscribe = scrollYProgress.on('change', v => {
+      if (v > 0.78 && mountIntro) setMountIntro(false)
+      if (v < 0.72 && !mountIntro) setMountIntro(true)
+    })
+    return () => unsubscribe()
+  }, [scrollYProgress, mountIntro])
 
   return (
-    <div ref={ref} className="mt-8 relative p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-primary-100 shadow-warm">
-      {/* Ghost layout to reserve space (verhindert Layout-Shift) */}
-      <div aria-hidden="true" className="invisible select-none pointer-events-none">
-        <div className="flex items-start space-x-4">
-          <div className="w-16 h-16 rounded-full border" />
-          <div>
-            <p className="text-gray-700 italic leading-relaxed">{fullText}</p>
-            <p className="text-sm text-gray-500 mt-2 font-medium">{author}</p>
-          </div>
-        </div>
-      </div>
-      {/* Actual content absolut darüber */}
-      <div className="absolute inset-0 p-6">
-        <div className="flex items-start space-x-4">
-          <img
-            src="/frau2.webp"
-            alt="Portrait von Dr. Anna Müller"
-            className="w-16 h-16 rounded-full object-cover border-3 border-primary-200 shadow-lg flex-shrink-0"
-            loading="lazy"
-          />
-          <div className="flex-1">
-            <p className="text-gray-700 italic leading-relaxed">
-              {displayed}
-              {!done && <span className="inline-block w-[6px] h-5 align-middle bg-primary-600 ml-0.5 animate-pulse" />}
-            </p>
-            <p className={`text-sm text-gray-500 mt-2 font-medium transition-opacity duration-500 ${done ? 'opacity-100' : 'opacity-0'}`}>{author}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <section ref={ref} className="relative w-full" aria-label="Landing Hero">
+      <div className="h-[140vh]" />
+      <motion.div className="fixed inset-0 z-0 overflow-hidden bg-white" style={{ clipPath, WebkitClipPath: clipPath, opacity: imageOpacity }} aria-hidden="true">
+        <div className="absolute inset-0" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1920&q=80)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+      </motion.div>
+      {mountIntro && (
+        <motion.div className="fixed inset-0 z-0 flex items-center pointer-events-none" style={{ opacity: fadeOpacity }}>
+          <motion.div className="w-full max-w-7xl mx-auto px-6 lg:px-12" style={{ y: translateY, filter: blur }}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-6 lg:pr-8 pointer-events-auto relative">
+                <motion.div className="absolute -inset-4 rounded-3xl -z-10 backdrop-blur-sm" style={{ backgroundColor: backdrop }} />
+                <div className="mb-6 uppercase tracking-[0.25em] text-xs font-semibold text-neutral-500">Individuelle & Professionelle Beratung</div>
+                <h1 className="text-4xl sm:text-5xl font-display font-semibold leading-tight text-neutral-800 mb-6">Ernährungsberatung <span className="block text-accent">für nachhaltige Veränderungen</span></h1>
+                <p className="text-lg text-neutral-600 leading-relaxed mb-8 max-w-xl">Wissenschaftlich fundiert, persönlich begleitet. Wir entwickeln gemeinsam eine Ernährung, die zu Ihrem Alltag, Ihren Zielen und Ihrer Gesundheit passt – ohne starre Verbote.</p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="#contact" className="btn-primary !px-10 !py-4 text-sm font-medium tracking-wide">Kostenlose Erstberatung</a>
+                  <a href="#about" className="btn-secondary !px-10 !py-4 text-sm font-medium tracking-wide">Mehr erfahren</a>
+                </div>
+                <div className="mt-10 flex flex-wrap gap-8 text-sm text-neutral-500">
+                  <div><div className="font-semibold text-neutral-800 text-lg">200+</div>Athlet:innen begleitet</div>
+                  <div><div className="font-semibold text-neutral-800 text-lg">12+</div>Jahre Expertise</div>
+                  <div><div className="font-semibold text-neutral-800 text-lg">98%</div>Zufriedenheit</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </section>
   )
 }

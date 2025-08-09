@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
+import ValueIntro from './components/ValueIntro'
 import Services from './components/Services'
 import About from './components/About'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import PhotoJourney from './components/PhotoJourney'
+// import PhotoJourney from './components/PhotoJourney' // deprecated: replaced by Hero
 import AnimationDemo from './components/AnimationDemo'
 
 // Separate pages
@@ -33,8 +34,8 @@ function App() {
       default:
         return (
           <>
-            <PhotoJourney />
             <Hero />
+            <ValueIntro />
             <Services />
             <About />
             <Testimonials />
