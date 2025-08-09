@@ -7,6 +7,7 @@ import About from './components/About'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import ColorDebugPanel from './components/ColorDebugPanel'
 // import PhotoJourney from './components/PhotoJourney' // deprecated: replaced by Hero
 import AnimationDemo from './components/AnimationDemo'
 
@@ -49,7 +50,8 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Navigation onNavigate={setCurrentPage} currentPage={currentPage} />
-      {renderPage()}
+  {renderPage()}
+  <ColorDebugPanel />
     </div>
   )
 }

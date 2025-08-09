@@ -164,7 +164,7 @@ export default function Hero() {
   return (
   <section
       ref={ref}
-      className="relative w-full min-h-screen snap-start"
+      className="relative w-full min-h-screen snap-start section-bg-1"
       aria-label="Landing Hero"
       data-autoscroll="none"
     >
@@ -206,14 +206,7 @@ export default function Hero() {
                 <p className="text-lg text-neutral-600 leading-relaxed mb-8 max-w-xl">
                   Wissenschaftlich fundiert, persönlich begleitet. Wir entwickeln gemeinsam eine Ernährung, die zu Ihrem Alltag, Ihren Zielen und Ihrer Gesundheit passt – ohne starre Verbote.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="#contact" className="btn-primary !px-10 !py-4 text-sm font-medium tracking-wide">
-                    Kostenlose Erstberatung
-                  </a>
-                  <a href="#about" className="btn-secondary !px-10 !py-4 text-sm font-medium tracking-wide">
-                    Mehr erfahren
-                  </a>
-                </div>
+                {/* CTA Buttons entfernt für flaches Design */}
                 <div className="mt-10 flex flex-wrap gap-8 text-sm text-neutral-500">
                   <div>
                     <div className="font-semibold text-neutral-800 text-lg">200+</div>Athlet:innen begleitet
@@ -231,37 +224,9 @@ export default function Hero() {
         </motion.div>
       )}
 
-      {/* Hintergrund unter dem Bild - nur im Hero */}
-      <div className="absolute inset-0 z-5 bg-gradient-to-r from-white to-gray-100"></div>
+  {/* Hintergrund unter dem Bild entfernt (nutzt section-bg-1) */}
       
-      {/* Text links - verschwindet wenn Bild nach links wandert */}
-      <motion.div 
-        className="absolute top-0 left-0 w-1/2 h-full z-5 flex items-center justify-center pl-12"
-        style={{ opacity: leftTextOpacity }}
-      >
-        <div className="max-w-2xl">
-          <div className="mb-6 uppercase tracking-[0.25em] text-xs font-semibold text-neutral-500">
-            Individuelle & Professionelle Beratung
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-display font-semibold leading-tight text-neutral-800 mb-6">
-            Ernährungsberatung <span className="block text-accent">für nachhaltige Veränderungen</span>
-          </h1>
-          <p className="text-lg text-neutral-600 leading-relaxed mb-8 max-w-xl">
-            Wissenschaftlich fundiert, persönlich begleitet. Wir entwickeln gemeinsam eine Ernährung, die zu Ihrem Alltag, Ihren Zielen und Ihrer Gesundheit passt – ohne starre Verbote.
-          </p>
-          <div className="flex flex-wrap gap-8 text-sm text-neutral-500">
-            <div>
-              <div className="font-semibold text-neutral-800 text-lg">200+</div>Athlet:innen begleitet
-            </div>
-            <div>
-              <div className="font-semibold text-neutral-800 text-lg">12+</div>Jahre Expertise
-            </div>
-            <div>
-              <div className="font-semibold text-neutral-800 text-lg">98%</div>Zufriedenheit
-            </div>
-          </div>
-        </div>
-      </motion.div>
+  {/* Doppelte linke Textsektion entfernt (verursachte Overlay). */}
       
       {/* Neuer Text rechts - wird sichtbar wenn Bild links ist */}
       <motion.div

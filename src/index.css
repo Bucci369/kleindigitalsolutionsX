@@ -228,6 +228,123 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing:
   }
 }
 
+/* ------------------ GLOBAL GRADIENT REMOVAL OVERRIDES ------------------ */
+/* Entfernt alle linearen Tailwind-Gradienten und vereinheitlicht CTA + Zahlen */
+@layer components {
+  /* Subtle alternating section backgrounds */
+  /* Progressive, stärker abgestufte Section Hintergründe (Top -> unten etwas dunkler) */
+  .section-bg-1 { background:#ffffff; }      /* rein weiß */
+  .section-bg-2 { background:#f8f6f2; }      /* + leichtes Warm-Tint */
+  .section-bg-3 { background:#f1eee8; }      /* deutlicher Schritt */
+  .section-bg-4 { background:#e9e5dd; }      /* mittlere Helligkeit */
+  .section-bg-5 { background:#e1dcd3; }      /* dunkler, aber noch soft */
+  .section-bg-6 { background:#d9d3c8; }      /* stärkste Stufe oben */
+  /* Optional: darker separator variant if needed later */
+  .section-divider { border-top:1px solid #e5e2dd; }
+
+  /* Simplified alternating section backgrounds */
+  .section-alt-1 { background:#ffffff; }
+  .section-alt-2 { background:#f4f3f1; }
+
+  /* About internal subsection backgrounds */
+  .about-slice-light { background:#ffffff; }
+  .about-slice-tint { background:#f7f5f2; }
+  .about-slice-neutral { background:#f2f0ec; }
+  /* Basis Button Reset (inkl. Links, die als Buttons fungieren) */
+  button:not(.brand-trigger):not(.nav-link):not(.nav-dd-item),
+  .btn-primary,
+  .btn-secondary,
+  .btn,
+  a[class*="btn"],
+  a[class*="Button"],
+  [data-cta],
+  [role="button"]:not(.brand-trigger) {
+    background-image: none !important;
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+  }
+  button:not(.brand-trigger):not(.nav-link):not(.nav-dd-item):hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn:hover,
+  a[class*="btn"]:hover,
+  [data-cta]:hover,
+  [role="button"]:not(.brand-trigger):hover {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  button:not(.brand-trigger):not(.nav-link):not(.nav-dd-item):active,
+  .btn-primary:active,
+  .btn-secondary:active,
+  .btn:active,
+  a[class*="btn"]:active,
+  [data-cta]:active,
+  [role="button"]:not(.brand-trigger):active {
+    background: #262626 !important;
+  }
+  button:not(.brand-trigger):not(.nav-link):not(.nav-dd-item):focus-visible,
+  .btn-primary:focus-visible,
+  .btn-secondary:focus-visible,
+  .btn:focus-visible,
+  a[class*="btn"]:focus-visible,
+  [data-cta]:focus-visible,
+  [role="button"]:not(.brand-trigger):focus-visible {
+    outline: 2px solid #000 !important;
+    outline-offset: 2px;
+  }
+  
+  /* Neutralisiert alle Tailwind Gradient Klassen */
+  [class*="bg-gradient-to-"],
+  [class*="from-"],[class*="via-"],[class*="to-"] {
+    background-image: none !important;
+  }
+  /* Verhindert ungewollte Transparenz bei gradient text (bg-clip) */
+  .bg-clip-text.text-transparent,
+  [class*="bg-clip-text"][class*="text-transparent"] {
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    color: #000 !important;
+  }
+  /* KPI / Zahlen (früher gradient) */
+  .kpi-number,
+  .stat-number,
+  [data-kpi],
+  [data-stat],
+  .text-4xl.font-bold.bg-clip-text.text-transparent,
+  .text-5xl.font-bold.bg-clip-text.text-transparent {
+    color: #000 !important;
+  }
+  
+  /* Farbige Kreise / Pills mit Gradient -> neutrale Fläche */
+  .rounded-full[class*="bg-gradient"],
+  .rounded-2xl[class*="bg-gradient"],
+  .rounded-3xl[class*="bg-gradient"] {
+    background: #fff !important;
+    border: 1px solid #e5e5e5 !important;
+  }
+  
+  /* Entferne lineare Schmuck-Linien (Gradient Linien) */
+  .w-px[class*="bg-gradient"],
+  .h-px[class*="bg-gradient"],
+  .w-16.h-px[class*="bg-gradient"],
+  .w-32.h-px[class*="bg-gradient"] {
+    background: #d4d4d4 !important;
+  }
+  
+  /* Footer / Header gradient backgrounds -> neutral */
+  footer[class*="bg-gradient"],
+  header[class*="bg-gradient"],
+  .bg-gradient-neutralized {
+    background: #111 !important;
+    background-image: none !important;
+  }
+}
+/* ----------------------------------------------------------------------- */
+
 /* Custom component styles */
 @layer components {
   .hero-minimal {
@@ -239,34 +356,91 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing:
     overflow: hidden;
   }
 
-  .nav-link {
+  /* Force brand name visibility (gegen weiße Balken / Overrides) */
+  .site-brand-name {
+    color: var(--color-neutral-900) !important;
+    background: none !important;
+    line-height: 1.05;
+  }
+
+  /* Brand override: ensure transparent background & no border */
+  header .brand-trigger { 
+    position: relative; 
+    z-index: 60; 
+    background: transparent !important; 
+    border: none !important; 
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  header .brand-trigger:focus-visible { outline: 2px solid #fff !important; outline-offset: 2px; }
+  header .brand-trigger::before { content:''; position:absolute; inset:0; background:transparent !important; }
+  .brand-trigger .brand-text, .brand-text {
+    color: #fff !important;
     position: relative;
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--color-neutral-600);
-    transition: all 0.3s var(--easing-standard);
-    letter-spacing: 0.025em;
+    z-index: 60;
+    background: transparent !important;
+    mix-blend-mode: normal !important;
   }
-  
-  .nav-link:hover {
-    color: var(--color-neutral-900);
+
+  /* ---------------- Dropdown Panel Modern Styles ---------------- */
+  .nav-dropdown-panel {
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    box-shadow: 0 6px 28px -4px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 0.75rem 0.8rem 0.85rem 0.8rem !important;
+    width: 20rem;
   }
-  
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--color-neutral-900);
-    transition: width 0.4s var(--easing-emphasized);
-  }
-  
-  .nav-link:hover::after {
+  .nav-dd-item {
+    --_hover-bg: rgba(0,0,0,0.04);
+    --_active-bg: rgba(0,0,0,0.08);
+    text-align: left;
     width: 100%;
+    background: transparent !important;
+    border: none !important;
+    padding: .65rem .7rem .55rem .7rem;
+    border-radius: 9px;
+    display: block;
+    transition: background .28s var(--easing-standard), color .28s var(--easing-standard);
   }
+  .nav-dd-item:hover { background: var(--_hover-bg) !important; }
+  .nav-dd-item:active { background: var(--_active-bg) !important; }
+  .nav-dd-item:focus-visible { outline:2px solid #000; outline-offset:2px; }
+  .nav-dd-item .nav-dd-title { font-size: .8rem; font-weight:600; letter-spacing:.02em; color:#161616; }
+  .nav-dd-item .nav-dd-desc { font-size: .65rem; line-height:1.3; margin-top:.25rem; color:#5a5a5a; }
+  .nav-dd-item:hover .nav-dd-title { color:#000; }
+  .nav-dd-separator { height:1px; background: linear-gradient(to right, rgba(0,0,0,0.08), transparent 60%); margin:.35rem 0 .55rem; }
+
+  /* state when panel opens (subtle scale) */
+  .nav-dropdown-panel[data-state='open'] { animation: navPanelIn .35s var(--easing-emphasized); }
+  @keyframes navPanelIn { 0% { opacity:0; transform:translateY(4px) scale(.98);} 100% { opacity:1; transform:translateY(0) scale(1);} }
+
+  /* nav-item pill style removed per request; using streamlined text links */
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem; /* kompakter */
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .55rem .8rem .5rem .8rem;
+    line-height: 1;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06) !important;
+    color: rgba(255,255,255,0.8) !important;
+    border: 1px solid rgba(255,255,255,0.18) !important;
+    backdrop-filter: blur(8px) saturate(160%);
+    -webkit-backdrop-filter: blur(8px) saturate(160%);
+    transition: background .28s var(--easing-standard), color .28s var(--easing-standard), border-color .28s var(--easing-standard), box-shadow .28s var(--easing-standard);
+  }
+  .nav-link:hover {
+    background: rgba(255,255,255,0.14) !important;
+    color: #fff !important;
+    border-color: rgba(255,255,255,0.42) !important;
+  }
+  .nav-link:active { background: rgba(255,255,255,0.22) !important; transform: translateY(1px); }
+  .nav-link:focus-visible { outline:2px solid #fff !important; outline-offset:2px; }
 
   .service-card {
     background: white;

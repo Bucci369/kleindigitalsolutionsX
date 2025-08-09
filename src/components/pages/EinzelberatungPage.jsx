@@ -64,7 +64,7 @@ export default function EinzelberatungPage() {
             </div>
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
               <span className="block">Individuelle Betreuung</span>
-              <span className="block bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
+              <span className="block text-neutral-900">
                 für Ihre Gesundheit
               </span>
             </h1>
@@ -91,7 +91,7 @@ export default function EinzelberatungPage() {
                 className={`flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
                   activeTab === tab.id
                     ? 'bg-primary-600 text-white shadow-lg'
-                    : 'bg-white text-gray-600 hover:bg-primary-50 hover:text-primary-600'
+                    : 'bg-white text-gray-600 hover:bg-neutral-100 hover:text-neutral-900'
                 }`}
               >
                 {tab.icon}
@@ -119,7 +119,7 @@ export default function EinzelberatungPage() {
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                     <p>
                       Eine gesunde und ausgewogene Ernährung dient in erster Linie der 
-                      <strong className="text-primary-600"> Steigerung des Wohlbefindens und der körperlichen Leistungsfähigkeit</strong>. 
+                      <strong className="text-neutral-800"> Steigerung des Wohlbefindens und der körperlichen Leistungsfähigkeit</strong>. 
                       Sie hilft dabei, Ernährungsfehler zu vermeiden und ernährungsbedingte Krankheiten vorzubeugen.
                     </p>
                     <p>
@@ -168,7 +168,7 @@ export default function EinzelberatungPage() {
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900">{termin.sitzung}</h3>
-                          <p className="text-sm text-primary-600">{termin.dauer}</p>
+                          <p className="text-sm text-neutral-700">{termin.dauer}</p>
                         </div>
                       </div>
                       <p className="text-gray-700 mb-3 leading-relaxed">{termin.inhalt}</p>
@@ -195,7 +195,7 @@ export default function EinzelberatungPage() {
                   {zielgruppen.map((gruppe, index) => (
                     <div key={index} className="bg-white rounded-2xl p-6 shadow-lg">
                       <h3 className="text-xl font-semibold text-gray-900 mb-3">{gruppe.kategorie}</h3>
-                      <p className="text-primary-600 font-medium mb-3">{gruppe.beschreibung}</p>
+                      <p className="text-neutral-700 font-medium mb-3">{gruppe.beschreibung}</p>
                       <p className="text-gray-600 text-sm leading-relaxed">{gruppe.details}</p>
                     </div>
                   ))}

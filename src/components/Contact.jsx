@@ -1,6 +1,6 @@
 export default function Contact() {
   return (
-    <div id="contact" className="bg-white py-20">
+  <div id="contact" className="section-bg-6 py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -57,7 +57,7 @@ export default function Contact() {
           </div>
           
           <div>
-            <div className="bg-gray-50 rounded-lg p-8">
+            <div className="p-0">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">
                 Anfrage senden
               </h3>
@@ -162,7 +162,7 @@ export default function Contact() {
                 
                 <button
                   type="submit"
-                  className="w-full bg-gray-900 text-white px-6 py-3 rounded-md font-medium hover:bg-gray-800 transition-colors"
+                  className="w-full underline font-medium px-6 py-3"
                 >
                   Anfrage senden
                 </button>

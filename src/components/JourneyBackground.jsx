@@ -112,7 +112,7 @@ export default function JourneyBackground({ showTexts = true, circleSizeVmin = 3
               }} 
               className="text-center mb-6"
             >
-              <p className="text-sm sm:text-base font-semibold tracking-wide text-primary-600">Start Ihrer Reise</p>
+              <p className="text-sm sm:text-base font-semibold tracking-wide text-neutral-800">Start Ihrer Reise</p>
               <h3 className="mt-2 text-2xl sm:text-3xl font-extrabold text-gray-900">Klarheit schaffen</h3>
               <p className="mt-2 text-gray-700">Wir definieren Ziele – messbar, realistisch und individuell.</p>
             </motion.div>

@@ -87,7 +87,7 @@ export default function BIAMessungPage() {
             </div>
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
               <span className="block">Körperanalyse mit</span>
-              <span className="block bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
+              <span className="block text-neutral-900">
                 Bio-Impedanz-Analyse
               </span>
             </h1>
@@ -115,7 +115,7 @@ export default function BIAMessungPage() {
                 className={`flex items-center px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
                   activeSection === tab.id
                     ? 'bg-primary-600 text-white shadow-lg'
-                    : 'bg-white text-gray-600 hover:bg-primary-50 hover:text-primary-600'
+                    : 'bg-white text-gray-600 hover:bg-neutral-100 hover:text-neutral-900'
                 }`}
               >
                 {tab.icon}
@@ -140,7 +140,7 @@ export default function BIAMessungPage() {
                   </h2>
                   <div className="space-y-4 text-gray-700 leading-relaxed">
                     <p>
-                      Die <strong className="text-primary-600">Bio-Impedanz-Analyse (BIA)</strong> dient der 
+                      Die <strong className="text-neutral-800">Bio-Impedanz-Analyse (BIA)</strong> dient der 
                       präzisen Bestimmung der Körperzusammensetzung. Dank ihrer Genauigkeit und 
                       Aussagekraft ist sie die Methode der Wahl für die Analyse von Körpergewicht, 
                       Körperfett, Muskelmasse und Wasserhaushalt.
@@ -174,11 +174,11 @@ export default function BIAMessungPage() {
               </div>
 
               {/* Preisinfo */}
-              <div className="bg-gradient-to-r from-primary-50 to-accent-50 rounded-2xl p-8 text-center">
+              <div className="bg-white rounded-2xl p-8 text-center border border-neutral-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   BIA-Messung inkl. Auswertungsgespräch
                 </h3>
-                <div className="text-4xl font-bold text-primary-600 mb-2">39€</div>
+                <div className="text-4xl font-bold text-neutral-900 mb-2">39€</div>
                 <p className="text-gray-600 mb-6">ca. 30 Minuten</p>
                 <button className="bg-primary-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors">
                   Termin vereinbaren
@@ -202,7 +202,7 @@ export default function BIAMessungPage() {
                   <div>
                     <p className="text-gray-700 leading-relaxed mb-6">
                       Bei der Bio-Impedanz-Analyse wird ein schwacher Wechselstrom von 
-                      <strong className="text-primary-600"> 0,8 mA bei 50 kHz</strong> durch den Körper geleitet. 
+                      <strong className="text-neutral-900"> 0,8 mA bei 50 kHz</strong> durch den Körper geleitet. 
                       Aus dem Widerstand, den der Körper dem Strom entgegensetzt, werden 
                       Messwerte abgeleitet.
                     </p>
@@ -229,7 +229,7 @@ export default function BIAMessungPage() {
                   {messwerte.map((wert, index) => (
                     <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">{wert.parameter}</h4>
-                      <div className="text-sm text-primary-600 font-medium mb-3">Einheit: {wert.einheit}</div>
+                      <div className="text-sm text-neutral-700 font-medium mb-3">Einheit: {wert.einheit}</div>
                       <p className="text-gray-700 text-sm leading-relaxed mb-4">{wert.beschreibung}</p>
                       <div className="bg-primary-50 p-3 rounded-lg">
                         <span className="text-xs font-medium text-primary-700">
@@ -392,7 +392,7 @@ export default function BIAMessungPage() {
                     href="https://www.medi-cal.de/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-primary-600 hover:text-primary-700 font-medium"
+                    className="text-neutral-800 hover:text-neutral-900 font-medium"
                   >
                     www.medi-cal.de
                   </a>

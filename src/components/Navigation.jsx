@@ -83,37 +83,35 @@ export default function Navigation({ onNavigate, currentPage }) {
       <nav className="w-full">
   <div className="flex items-center h-14 md:h-14 w-full px-0">
           {/* Logo (flush left) */}
-          <div className="flex-shrink-0">
-            <button
+          <div className="flex-shrink-0 pl-4 md:pl-5">
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => handleNavigation('home')}
-              className="block focus:outline-none focus:ring-2 focus:ring-white/40 rounded-sm pl-4 md:pl-5"
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNavigation('home') } }}
+              className="brand-trigger cursor-pointer select-none outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-sm"
             >
-              <span className="font-display text-xl font-medium text-white tracking-tight">Anna Müller</span>
-            </button>
+              <span className="font-display text-xl font-medium tracking-tight brand-text">Anna Müller</span>
+            </div>
           </div>
 
           {/* Desktop Navigation (flush right) */}
-          <div className="hidden lg:flex lg:items-center space-x-8 ml-auto pr-4 md:pr-5">
+          <div className="hidden lg:flex lg:items-center space-x-3 ml-auto pr-4 md:pr-5">
             <NavigationMenu>
               <NavigationMenuList>
                 
                 {/* Services Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-link bg-transparent text-white/80 hover:text-white font-medium">
+                  <NavigationMenuTrigger className="nav-link">
                     Leistungen
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-80 gap-1 p-4 bg-white border border-neutral-200 shadow-elegant">
+                    <div className="nav-dropdown-panel grid gap-1" data-state="open">
                       {servicesData.map((service) => (
                         <NavigationMenuLink key={service.title} asChild>
-                          <button
-                            className="group select-none p-3 leading-none no-underline outline-none transition-colors hover:bg-neutral-50 text-left w-full"
-                            onClick={service.action}
-                          >
-                            <div className="text-sm font-medium text-neutral-900">{service.title}</div>
-                            <p className="text-xs text-neutral-500 mt-1">
-                              {service.description}
-                            </p>
+                          <button className="nav-dd-item" onClick={service.action}>
+                            <div className="nav-dd-title">{service.title}</div>
+                            <div className="nav-dd-desc">{service.description}</div>
                           </button>
                         </NavigationMenuLink>
                       ))}
@@ -123,21 +121,16 @@ export default function Navigation({ onNavigate, currentPage }) {
 
                 {/* Resources Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-link bg-transparent text-white/80 hover:text-white font-medium">
+                  <NavigationMenuTrigger className="nav-link">
                     Ressourcen
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-80 gap-1 p-4 bg-white border border-neutral-200 shadow-elegant">
+                    <div className="nav-dropdown-panel grid gap-1" data-state="open">
                       {resourcesData.map((resource) => (
                         <NavigationMenuLink key={resource.title} asChild>
-                          <button
-                            className="group select-none p-3 leading-none no-underline outline-none transition-colors hover:bg-neutral-50 text-left w-full"
-                            onClick={resource.action}
-                          >
-                            <div className="text-sm font-medium text-neutral-900">{resource.title}</div>
-                            <p className="text-xs text-neutral-500 mt-1">
-                              {resource.description}
-                            </p>
+                          <button className="nav-dd-item" onClick={resource.action}>
+                            <div className="nav-dd-title">{resource.title}</div>
+                            <div className="nav-dd-desc">{resource.description}</div>
                           </button>
                         </NavigationMenuLink>
                       ))}
@@ -150,7 +143,7 @@ export default function Navigation({ onNavigate, currentPage }) {
                   <NavigationMenuLink asChild>
                     <button 
                       onClick={() => handleScrollTo('about')} 
-                      className="nav-link text-white/80 hover:text-white"
+                      className="nav-link"
                     >
                       Über mich
                     </button>
@@ -161,7 +154,7 @@ export default function Navigation({ onNavigate, currentPage }) {
                   <NavigationMenuLink asChild>
                     <button 
                       onClick={() => handleScrollTo('testimonials')} 
-                      className="nav-link text-white/80 hover:text-white"
+                      className="nav-link"
                     >
                       Bewertungen
                     </button>

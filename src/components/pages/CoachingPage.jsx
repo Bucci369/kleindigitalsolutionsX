@@ -64,7 +64,7 @@ export default function CoachingPage() {
             </div>
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
               <span className="block">Erreichen Sie Ihre</span>
-              <span className="block bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
+              <span className="block text-neutral-900">
                 sportlichen Ziele
               </span>
             </h1>
@@ -117,7 +117,7 @@ export default function CoachingPage() {
                         {pkg.sessions}
                       </span>
                     </div>
-                    <div className="text-4xl font-bold text-primary-600 mb-2">{pkg.price}</div>
+                    <div className="text-4xl font-bold text-neutral-900 mb-2">{pkg.price}</div>
                     <div className="text-gray-500">einmalig</div>
                   </div>
 
@@ -188,7 +188,7 @@ export default function CoachingPage() {
             ].map((process, index) => (
               <div key={index} className="text-center">
                 <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center text-white mx-auto mb-4 shadow-lg">
+                  <div className="w-16 h-16 bg-white border border-neutral-300 rounded-full flex items-center justify-center text-neutral-900 mx-auto mb-4 shadow-sm">
                     {process.icon}
                   </div>
                   <div className="absolute -top-2 -right-2 w-8 h-8 bg-accent-500 text-white rounded-full flex items-center justify-center text-sm font-bold">

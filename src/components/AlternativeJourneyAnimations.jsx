@@ -21,7 +21,7 @@ export function MorphingTextJourney() {
         {steps.map((step, index) => (
           <motion.div
             key={index}
-            className={`absolute text-8xl font-black bg-gradient-to-r ${step.color} bg-clip-text text-transparent`}
+            className={`absolute text-8xl font-black text-neutral-900`}
             style={{
               opacity: useTransform(scrollYProgress, 
                 [index * 0.25, index * 0.25 + 0.1, (index + 1) * 0.25 - 0.1, (index + 1) * 0.25],

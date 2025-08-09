@@ -80,7 +80,7 @@ export default function GruppenberatungPage() {
             </div>
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
               <span className="block">Gemeinsam zum</span>
-              <span className="block bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
+              <span className="block text-neutral-900">
                 Wunschgewicht
               </span>
             </h1>
@@ -154,7 +154,7 @@ export default function GruppenberatungPage() {
                 {bmiData.result ? (
                   <div className="bg-gray-50 rounded-lg p-6">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-primary-600 mb-2">
+                      <div className="text-3xl font-bold text-neutral-900 mb-2">
                         {bmiData.result.value}
                       </div>
                       <div className="text-lg font-medium text-gray-700 mb-4">
@@ -220,7 +220,7 @@ export default function GruppenberatungPage() {
                 <div className="p-8">
                   <div className="mb-6">
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">{program.title}</h3>
-                    <p className="text-lg text-primary-600 font-medium">{program.subtitle}</p>
+                    <p className="text-lg text-neutral-700 font-medium">{program.subtitle}</p>
                   </div>
 
                   <div className="flex items-center gap-6 text-sm text-gray-600 mb-6">
@@ -234,7 +234,7 @@ export default function GruppenberatungPage() {
                     </span>
                   </div>
 
-                  <div className="text-3xl font-bold text-primary-600 mb-6">{program.price}</div>
+                  <div className="text-3xl font-bold text-neutral-900 mb-6">{program.price}</div>
 
                   <p className="text-gray-700 leading-relaxed mb-6">{program.description}</p>
 
@@ -304,7 +304,7 @@ export default function GruppenberatungPage() {
               }
             ].map((process, index) => (
               <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4 shadow-lg">
+                <div className="w-16 h-16 bg-white border border-neutral-300 rounded-full flex items-center justify-center text-neutral-900 text-xl font-bold mx-auto mb-4 shadow-sm">
                   {process.step}
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{process.title}</h3>

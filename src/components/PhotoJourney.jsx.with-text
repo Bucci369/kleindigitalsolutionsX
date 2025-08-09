@@ -208,7 +208,7 @@ export default function PhotoJourney() {
               transform: `translateY(${Math.min(0, (manualProgress - 1.6) * 30)}px)` 
             }}
           >
-            <p className="text-sm sm:text-base font-semibold tracking-wide text-primary-600 bg-white/80 inline-block px-3 py-1 rounded-full">
+            <p className="text-sm sm:text-base font-semibold tracking-wide text-neutral-800 bg-white/80 inline-block px-3 py-1 rounded-full">
               Start Ihrer Reise
             </p>
             <h3 className="mt-2 text-2xl sm:text-3xl font-extrabold text-white drop-shadow-lg">

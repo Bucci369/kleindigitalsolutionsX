@@ -63,7 +63,7 @@ export default function Services() {
 
   return (
     <section
-      className="py-28 bg-white relative"
+  className="py-28 section-bg-3 relative"
       id="services"
       aria-labelledby="leistungen-heading"
     >
@@ -88,7 +88,7 @@ export default function Services() {
       {/* Responsive: Cards (mobile) + Vergleichstabelle (desktop) */}
       <div className="container-narrow">
         {/* Mobile Cards */}
-        <div className="grid gap-8 lg:hidden">
+  <div className="grid gap-12 lg:hidden">
           {services.map(s => (
             <motion.div
               key={s.number}
@@ -96,7 +96,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="border border-neutral-200 rounded-2xl p-6 bg-white shadow-sm hover:shadow-md transition-shadow"
+              className="p-2"
             >
               <div className="text-xs tracking-widest text-neutral-400 mb-2">{s.number}</div>
               <h3 className="font-display text-xl font-semibold mb-3 leading-snug">{s.title}</h3>
@@ -117,9 +117,9 @@ export default function Services() {
                   <li key={d} className="leading-snug">{d}</li>
                 ))}
               </ul>
-              <div className="flex gap-3">
-                <a href="#contact" className="btn-primary flex-1 text-center">Anfragen</a>
-                <button className="btn-secondary flex-1">Details</button>
+              <div className="flex gap-3 text-sm underline">
+                <a href="#contact" className="flex-1 text-center">Anfragen</a>
+                <button className="flex-1">Details</button>
               </div>
             </motion.div>
           ))}
@@ -127,33 +127,30 @@ export default function Services() {
 
         {/* Desktop Comparison Table */}
         <div className="hidden lg:block">
-          <div className="overflow-hidden rounded-3xl border border-neutral-200 bg-white">
-            <div className="grid grid-cols-5 text-sm font-medium bg-neutral-50 border-b border-neutral-200">
-              <div className="py-4 px-6 text-neutral-500">Leistung</div>
-              <div className="py-4 px-6 text-neutral-500">Kurzbeschreibung</div>
-              <div className="py-4 px-6 text-neutral-500">Dauer</div>
-              <div className="py-4 px-6 text-neutral-500">Preis</div>
-              <div className="py-4 px-6 text-neutral-500">Kernbestandteile</div>
+          <div>
+            <div className="grid grid-cols-5 text-xs font-medium uppercase tracking-wide mb-4">
+              <div>Leistung</div>
+              <div>Kurzbeschreibung</div>
+              <div>Dauer</div>
+              <div>Preis</div>
+              <div>Kernbestandteile</div>
             </div>
-            {services.map((s, idx) => (
-              <div
-                key={s.number}
-                className={`grid grid-cols-5 border-b border-neutral-100 last:border-b-0 transition-colors ${idx % 2 === 1 ? 'bg-neutral-50/40' : 'bg-white'} hover:bg-accent-50/40`}
-              >
-                <div className="py-6 px-6 align-top">
+            {services.map((s) => (
+              <div key={s.number} className="grid grid-cols-5 py-6 border-t border-neutral-300 first:border-t-0 text-sm">
+                <div>
                   <div className="text-xs tracking-widest text-neutral-400 mb-1">{s.number}</div>
                   <div className="font-display font-semibold text-neutral-900 leading-snug">{s.title}</div>
                 </div>
-                <div className="py-6 px-6 text-neutral-600 leading-relaxed text-sm">{s.short}</div>
-                <div className="py-6 px-6 text-neutral-900 font-medium text-sm">{s.duration}</div>
-                <div className="py-6 px-6">
+                <div className="text-neutral-600 leading-relaxed text-sm">{s.short}</div>
+                <div className="text-neutral-900 font-medium text-sm">{s.duration}</div>
+                <div>
                   <div className="font-display text-lg font-semibold tracking-tight text-neutral-900">€{s.price}</div>
-                  <div className="mt-3 flex gap-2">
-                    <a href="#contact" className="btn-primary !py-2 !px-4 text-xs">Anfragen</a>
-                    <button className="btn-secondary !py-2 !px-4 text-xs">Details</button>
+                  <div className="mt-3 flex gap-2 text-xs underline">
+                    <a href="#contact" className="">Anfragen</a>
+                    <button className="">Details</button>
                   </div>
                 </div>
-                <div className="py-6 px-6">
+                <div>
                   <ul className="text-sm text-neutral-700 space-y-1 list-none m-0 p-0">
                     {s.details.map(d => (
                       <li key={d} className="leading-snug">{d}</li>
