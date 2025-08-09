@@ -1,5 +1,24 @@
 import { motion, useScroll, useTransform, useMotionValue, animate } from 'framer-motion'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
+
+// Performance Throttle-Funktion
+const throttle = (func, delay) => {
+  let timeoutId
+  let lastExecTime = 0
+  return function (...args) {
+    const currentTime = Date.now()
+    if (currentTime - lastExecTime > delay) {
+      func.apply(this, args)
+      lastExecTime = currentTime
+    } else {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        func.apply(this, args)
+        lastExecTime = Date.now()
+      }, delay - (currentTime - lastExecTime))
+    }
+  }
+}
 
 export default function Hero({ disableIntro = false }) {
   const ref = useRef(null)
@@ -146,16 +165,20 @@ export default function Hero({ disableIntro = false }) {
 
   // Falls User doch ganz normal oben landet und  nicht interagiert: kein Autostart -> wartet auf Scroll
 
-  // Track if user is in hero section
-  useEffect(() => {
-    const handleScroll = () => {
+  // Optimierter Throttled Scroll Handler
+  const throttledScrollHandler = useCallback(
+    throttle(() => {
       const heroHeight = window.innerHeight
       setIsInHero(window.scrollY < heroHeight)
-    }
-    
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    }, 16), // ~60fps
+    []
+  )
+  
+  // Track if user is in hero section
+  useEffect(() => {
+    window.addEventListener('scroll', throttledScrollHandler, { passive: true })
+    return () => window.removeEventListener('scroll', throttledScrollHandler)
+  }, [throttledScrollHandler])
 
   // Kein nachträgliches Auto-Weiter-Scrollen – Scroll-Snap übernimmt sanften Übergang
 
