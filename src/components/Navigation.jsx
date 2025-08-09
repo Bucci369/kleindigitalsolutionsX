@@ -77,41 +77,29 @@ export default function Navigation({ onNavigate, currentPage }) {
   ]
 
   return (
-    <motion.header 
-      className="fixed top-0 left-0 right-0 z-50 glass border-b border-neutral-200/50"
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
+    <motion.header
+      className="fixed top-0 left-0 right-0 z-50 bg-black/55 backdrop-blur-md border-b border-white/10"
     >
-      <nav className="container-narrow">
-        <div className="flex items-center justify-between h-20">
-          
-          {/* Logo */}
+      <nav className="w-full">
+  <div className="flex items-center h-14 md:h-14 w-full px-0">
+          {/* Logo (flush left) */}
           <div className="flex-shrink-0">
-            <button 
-              onClick={() => handleNavigation('home')} 
-              className="group flex items-center space-x-4 transition-all duration-300"
+            <button
+              onClick={() => handleNavigation('home')}
+              className="block focus:outline-none focus:ring-2 focus:ring-white/40 rounded-sm pl-4 md:pl-5"
             >
-              <div className="w-2 h-2 bg-neutral-900 rounded-full transition-all duration-300 group-hover:w-8"></div>
-              <div>
-                <div className="font-display text-xl font-medium text-neutral-900">
-                  Dr. Anna Müller
-                </div>
-                <div className="text-xs text-neutral-500 font-medium tracking-wide uppercase">
-                  Sporternährung
-                </div>
-              </div>
+              <span className="font-display text-xl font-medium text-white tracking-tight">Anna Müller</span>
             </button>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center space-x-8">
+          {/* Desktop Navigation (flush right) */}
+          <div className="hidden lg:flex lg:items-center space-x-8 ml-auto pr-4 md:pr-5">
             <NavigationMenu>
               <NavigationMenuList>
                 
                 {/* Services Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-link bg-transparent text-neutral-600 hover:text-neutral-900 font-medium">
+                  <NavigationMenuTrigger className="nav-link bg-transparent text-white/80 hover:text-white font-medium">
                     Leistungen
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -135,7 +123,7 @@ export default function Navigation({ onNavigate, currentPage }) {
 
                 {/* Resources Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="nav-link bg-transparent text-neutral-600 hover:text-neutral-900 font-medium">
+                  <NavigationMenuTrigger className="nav-link bg-transparent text-white/80 hover:text-white font-medium">
                     Ressourcen
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -162,7 +150,7 @@ export default function Navigation({ onNavigate, currentPage }) {
                   <NavigationMenuLink asChild>
                     <button 
                       onClick={() => handleScrollTo('about')} 
-                      className="nav-link"
+                      className="nav-link text-white/80 hover:text-white"
                     >
                       Über mich
                     </button>
@@ -173,41 +161,26 @@ export default function Navigation({ onNavigate, currentPage }) {
                   <NavigationMenuLink asChild>
                     <button 
                       onClick={() => handleScrollTo('testimonials')} 
-                      className="nav-link"
+                      className="nav-link text-white/80 hover:text-white"
                     >
                       Bewertungen
                     </button>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <button 
-                      onClick={() => handleNavigation('demo')} 
-                      className="nav-link bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm hover:from-blue-600 hover:to-purple-700 transition-all"
-                    >
-                      🎨 Animationen
-                    </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                {/* Removed Animationen menu item */}
 
               </NavigationMenuList>
             </NavigationMenu>
 
-            {/* CTA Button */}
-            <button 
-              onClick={() => handleScrollTo('contact')}
-              className="btn-primary"
-            >
-              Kontakt
-            </button>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="lg:hidden">
+          {/* Mobile menu button (far right) */}
+      <div className="lg:hidden ml-auto pr-2">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-neutral-600 hover:text-neutral-900 transition-colors duration-200"
+        className="p-2 text-white/80 hover:text-white transition-colors duration-200"
+              aria-label={isMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
             >
               <span className="sr-only">Menü</span>
               {isMenuOpen ? (
@@ -217,7 +190,7 @@ export default function Navigation({ onNavigate, currentPage }) {
               )}
             </button>
           </div>
-        </div>
+  </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
@@ -227,63 +200,54 @@ export default function Navigation({ onNavigate, currentPage }) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <div className="py-4 space-y-1 bg-white border-t border-neutral-200">
+            <div className="py-4 space-y-1 bg-neutral-950/95 backdrop-blur-md border-t border-white/10">
               
               {/* Services Section */}
               <div className="py-2">
-                <div className="text-sm font-medium text-neutral-900 px-3 py-2 tracking-wide uppercase">Leistungen</div>
+                <div className="text-sm font-medium text-white px-3 py-2 tracking-wide uppercase">Leistungen</div>
                 {servicesData.map((service) => (
                   <button
                     key={service.title}
                     onClick={service.action}
-                    className="block px-3 py-2 text-sm text-neutral-600 hover:text-neutral-900 transition-colors w-full text-left"
+                    className="block px-3 py-2 text-sm text-white/80 hover:text-white transition-colors w-full text-left"
                   >
-                    <div className="font-medium">{service.title}</div>
-                    <div className="text-xs text-neutral-500">{service.description}</div>
+                    <div className="font-medium text-white">{service.title}</div>
+                    <div className="text-xs text-white/60">{service.description}</div>
                   </button>
                 ))}
               </div>
 
               {/* Resources Section */}
-              <div className="py-2 border-t border-neutral-100">
-                <div className="text-sm font-medium text-neutral-900 px-3 py-2 tracking-wide uppercase">Ressourcen</div>
+              <div className="py-2 border-t border-white/10">
+                <div className="text-sm font-medium text-white px-3 py-2 tracking-wide uppercase">Ressourcen</div>
                 {resourcesData.map((resource) => (
                   <button
                     key={resource.title}
                     onClick={resource.action}
-                    className="block px-3 py-2 text-sm text-neutral-600 hover:text-neutral-900 transition-colors w-full text-left"
+                    className="block px-3 py-2 text-sm text-white/80 hover:text-white transition-colors w-full text-left"
                   >
-                    <div className="font-medium">{resource.title}</div>
-                    <div className="text-xs text-neutral-500">{resource.description}</div>
+                    <div className="font-medium text-white">{resource.title}</div>
+                    <div className="text-xs text-white/60">{resource.description}</div>
                   </button>
                 ))}
               </div>
 
               {/* Other Links */}
-              <div className="border-t border-neutral-100 pt-2">
+        <div className="border-t border-white/10 pt-2">
                 <button 
                   onClick={() => handleScrollTo('about')} 
-                  className="block px-3 py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors w-full text-left"
+          className="block px-3 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors w-full text-left"
                 >
                   Über mich
                 </button>
                 <button 
                   onClick={() => handleScrollTo('testimonials')} 
-                  className="block px-3 py-2 text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors w-full text-left"
+          className="block px-3 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors w-full text-left"
                 >
                   Bewertungen
                 </button>
               </div>
 
-              {/* CTA Button */}
-              <div className="border-t border-neutral-100 pt-4 px-3">
-                <button 
-                  onClick={() => handleScrollTo('contact')} 
-                  className="btn-primary w-full"
-                >
-                  Kontakt
-                </button>
-              </div>
             </div>
           </motion.div>
         )}

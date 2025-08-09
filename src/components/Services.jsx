@@ -1,205 +1,190 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 
 export default function Services() {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start']
-  })
-  
-  const [activeIndex, setActiveIndex] = useState(0)
-  
-  const services = [
+  const services = useMemo(() => ([
     {
       number: '01',
-      title: 'Performance\nAnalyse',
-      description: 'Umfassende Bewertung Ihrer aktuellen Leistung und Ernährung',
+      title: 'Performance Analyse',
+      short: 'Umfassende Bewertung Ihrer aktuellen Leistung und Ernährung',
       duration: '90 Min',
-      price: '150'
+      price: '150',
+      tier: 'Analyse',
+      details: [
+        'Anamnese & Zieldefinition',
+        'Ist-Analyse Ernährung & Belastung',
+        'Priorisierte Handlungsempfehlungen',
+        'Strukturierter Maßnahmenfahrplan'
+      ]
     },
     {
       number: '02',
-      title: 'Individueller\nErnährungsplan',
-      description: 'Maßgeschneiderte Strategien für Ihre sportlichen Ziele',
+      title: 'Individueller Ernährungsplan',
+      short: 'Maßgeschneiderte Strategien für Ihre sportlichen Ziele',
       duration: 'Laufend',
-      price: '280'
+      price: '280',
+      tier: 'Plan',
+      details: [
+        'Auswertung Ernährungsprotokoll',
+        'Periodisierte Nährstoffstrategie',
+        'Planvarianten Training / Regeneration',
+        'Review & Anpassung (30 Min)'
+      ]
     },
     {
       number: '03',
-      title: 'BIA-Körper\nanalyse',
-      description: 'Präzise Messung Ihrer Körperzusammensetzung',
+      title: 'BIA-Körperanalyse',
+      short: 'Präzise Messung Ihrer Körperzusammensetzung',
       duration: '30 Min',
-      price: '75'
+      price: '75',
+      tier: 'Messung',
+      details: [
+        'Messung & Auswertung',
+        'Phasenwinkel-Interpretation',
+        'Vergleich zu Referenzprofilen',
+        'Ableitung nächster Schritte'
+      ]
     },
     {
       number: '04',
-      title: 'Langzeit\nBetreuung',
-      description: 'Kontinuierliche Optimierung über 12 Wochen',
+      title: 'Langzeit Betreuung (12 Wochen)',
+      short: 'Kontinuierliche Optimierung mit adaptiver Strategie',
       duration: '3 Monate',
-      price: '650'
+      price: '650',
+      tier: 'Betreuung',
+      details: [
+        'Initiale Strategie-Session',
+        'Wöchentliche Check-ins (asynchron)',
+        'Plan-Updates nach Bedarf',
+        'Abschluss-Analyse & Ausblick'
+      ]
     }
-  ]
+  ]), [])
 
   return (
-    <section 
-      ref={ref}
-      className="section-spacing bg-white relative overflow-hidden"
+    <section
+      className="py-28 bg-white relative"
       id="services"
+      aria-labelledby="leistungen-heading"
     >
-      {/* Section Label */}
-      <motion.div 
-        className="container-narrow"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <div className="text-sm font-medium text-neutral-500 tracking-[0.2em] uppercase mb-16">
-          Leistungen
-        </div>
-      </motion.div>
-
-      {/* Services Carousel */}
-      <div className="relative">
-        {/* Background Numbers */}
-        <motion.div 
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          style={{
-            x: useTransform(scrollYProgress, [0, 1], ['0%', '-20%'])
-          }}
+      <div className="container-narrow">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mb-20"
         >
-          <span className="text-[40rem] font-display font-light text-neutral-100 leading-none select-none">
-            0{activeIndex + 1}
-          </span>
+          <div className="text-xs tracking-[0.25em] font-medium text-neutral-500 uppercase mb-6">Leistungen</div>
+          <h2 id="leistungen-heading" className="text-4xl sm:text-5xl font-display font-semibold tracking-tight text-neutral-900 leading-tight mb-6">
+            Klar strukturiert. Vergleichbar. Wirksam.
+          </h2>
+          <p className="text-lg text-neutral-600 leading-relaxed">
+            Vier abgestufte Leistungsbausteine – vom punktuellen Leistungs-Check bis zur eng begleiteten Transformation. Transparent in Aufbau, Umfang und Invest.
+          </p>
         </motion.div>
+      </div>
 
-        {/* Service Cards Container */}
-        <div className="container-narrow relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                className={`service-card cursor-pointer relative ${
-                  index === activeIndex ? 'active' : ''
-                }`}
-                onClick={() => setActiveIndex(index)}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8 }}
-              >
-                {/* Service Number */}
-                <div className="text-4xl font-display font-light text-neutral-300 mb-6">
-                  {service.number}
+      {/* Responsive: Cards (mobile) + Vergleichstabelle (desktop) */}
+      <div className="container-narrow">
+        {/* Mobile Cards */}
+        <div className="grid gap-8 lg:hidden">
+          {services.map(s => (
+            <motion.div
+              key={s.number}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="border border-neutral-200 rounded-2xl p-6 bg-white shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="text-xs tracking-widest text-neutral-400 mb-2">{s.number}</div>
+              <h3 className="font-display text-xl font-semibold mb-3 leading-snug">{s.title}</h3>
+              <p className="text-sm text-neutral-600 leading-relaxed mb-5">{s.short}</p>
+              <div className="grid grid-cols-2 gap-4 text-sm mb-5">
+                <div>
+                  <div className="text-neutral-500 text-xs uppercase tracking-wide mb-1">Dauer</div>
+                  <div className="font-medium">{s.duration}</div>
                 </div>
-
-                {/* Service Title */}
-                <h3 className="text-2xl font-display font-medium text-neutral-900 mb-4 leading-tight">
-                  {service.title.split('\n').map((line, i) => (
-                    <div key={i}>{line}</div>
-                  ))}
-                </h3>
-
-                {/* Service Description */}
-                <p className="text-neutral-600 mb-8 leading-relaxed">
-                  {service.description}
-                </p>
-
-                {/* Service Details */}
-                <div className="space-y-3 mb-8">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-neutral-500">Dauer</span>
-                    <span className="font-medium text-neutral-900">{service.duration}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500 text-sm">Preis</span>
-                    <span className="text-2xl font-display font-medium text-neutral-900">
-                      €{service.price}
-                    </span>
-                  </div>
+                <div>
+                  <div className="text-neutral-500 text-xs uppercase tracking-wide mb-1">Preis</div>
+                  <div className="font-display text-lg font-semibold">€{s.price}</div>
                 </div>
-
-                {/* Action */}
-                <motion.button
-                  className="btn-secondary w-full"
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Details ansehen
-                </motion.button>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+              <div className="text-xs font-medium tracking-wide text-neutral-500 uppercase mb-2">Enthält</div>
+              <ul className="text-sm text-neutral-700 space-y-1 mb-6 list-none">
+                {s.details.map(d => (
+                  <li key={d} className="leading-snug">{d}</li>
+                ))}
+              </ul>
+              <div className="flex gap-3">
+                <a href="#contact" className="btn-primary flex-1 text-center">Anfragen</a>
+                <button className="btn-secondary flex-1">Details</button>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Navigation Dots */}
-        <div className="container-narrow relative z-10 mt-16">
-          <div className="flex justify-center space-x-2">
-            {services.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === activeIndex 
-                    ? 'bg-neutral-900 w-8' 
-                    : 'bg-neutral-300 hover:bg-neutral-400'
-                }`}
-              />
+        {/* Desktop Comparison Table */}
+        <div className="hidden lg:block">
+          <div className="overflow-hidden rounded-3xl border border-neutral-200 bg-white">
+            <div className="grid grid-cols-5 text-sm font-medium bg-neutral-50 border-b border-neutral-200">
+              <div className="py-4 px-6 text-neutral-500">Leistung</div>
+              <div className="py-4 px-6 text-neutral-500">Kurzbeschreibung</div>
+              <div className="py-4 px-6 text-neutral-500">Dauer</div>
+              <div className="py-4 px-6 text-neutral-500">Preis</div>
+              <div className="py-4 px-6 text-neutral-500">Kernbestandteile</div>
+            </div>
+            {services.map((s, idx) => (
+              <div
+                key={s.number}
+                className={`grid grid-cols-5 border-b border-neutral-100 last:border-b-0 transition-colors ${idx % 2 === 1 ? 'bg-neutral-50/40' : 'bg-white'} hover:bg-accent-50/40`}
+              >
+                <div className="py-6 px-6 align-top">
+                  <div className="text-xs tracking-widest text-neutral-400 mb-1">{s.number}</div>
+                  <div className="font-display font-semibold text-neutral-900 leading-snug">{s.title}</div>
+                </div>
+                <div className="py-6 px-6 text-neutral-600 leading-relaxed text-sm">{s.short}</div>
+                <div className="py-6 px-6 text-neutral-900 font-medium text-sm">{s.duration}</div>
+                <div className="py-6 px-6">
+                  <div className="font-display text-lg font-semibold tracking-tight text-neutral-900">€{s.price}</div>
+                  <div className="mt-3 flex gap-2">
+                    <a href="#contact" className="btn-primary !py-2 !px-4 text-xs">Anfragen</a>
+                    <button className="btn-secondary !py-2 !px-4 text-xs">Details</button>
+                  </div>
+                </div>
+                <div className="py-6 px-6">
+                  <ul className="text-sm text-neutral-700 space-y-1 list-none m-0 p-0">
+                    {s.details.map(d => (
+                      <li key={d} className="leading-snug">{d}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Philosophy Section */}
-      <motion.div 
-        className="container-narrow mt-32"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-hero font-display text-neutral-900 mb-6">
-              Wissenschaft
-              <br />
-              <span className="text-accent">trifft Praxis.</span>
-            </h2>
-            <p className="text-subtitle mb-8">
-              Evidenzbasierte Ernährungsstrategien, die in der Realität funktionieren.
-            </p>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <div className="w-1 h-8 bg-accent mr-4"></div>
-                <span className="font-medium text-neutral-900">12+ Jahre Expertise</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-1 h-8 bg-accent mr-4"></div>
-                <span className="font-medium text-neutral-900">200+ Erfolgreiche Athleten</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-1 h-8 bg-accent mr-4"></div>
-                <span className="font-medium text-neutral-900">Individuelle Betreuung</span>
-              </div>
+      {/* Trust Band */}
+      <div className="container-narrow mt-28">
+        <div className="grid md:grid-cols-3 gap-10 border-t border-neutral-200 pt-16">
+          {[
+            { label: 'Erfahrung', value: '12+ Jahre' },
+            { label: 'Athleten betreut', value: '200+' },
+            { label: 'Ansatz', value: 'Individuell & evidenzbasiert' }
+          ].map(item => (
+            <div key={item.label} className="space-y-2">
+              <div className="text-xs tracking-widest text-neutral-500 uppercase">{item.label}</div>
+              <div className="text-2xl font-display font-semibold text-neutral-900">{item.value}</div>
+              <div className="h-px bg-neutral-200" />
             </div>
-          </div>
-          
-          <motion.div 
-            className="relative"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.4 }}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-              alt="Ernährungsberatung"
-              className="w-full h-96 object-cover"
-            />
-            <div className="absolute -bottom-4 -right-4 w-24 h-px bg-accent"></div>
-          </motion.div>
+          ))}
         </div>
-      </motion.div>
+      </div>
+
+      {/* Philosophy Section */}
+  {/* Entfernt: Alte Philosophie-Bild-Sektion zugunsten kompakter Vergleichsdarstellung */}
     </section>
   )
 }

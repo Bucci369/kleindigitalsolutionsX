@@ -6,7 +6,6 @@ import About from './components/About'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import LeadCapture from './components/LeadCapture'
 import PhotoJourney from './components/PhotoJourney'
 import AnimationDemo from './components/AnimationDemo'
 
@@ -41,7 +40,6 @@ function App() {
             <Testimonials />
             <Contact />
             <Footer />
-            <LeadCapture />
           </>
         )
     }

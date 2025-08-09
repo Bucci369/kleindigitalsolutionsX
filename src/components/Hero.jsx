@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Hero() {
   const [debugMode, setDebugMode] = useState(false)
@@ -22,26 +22,20 @@ export default function Hero() {
     return () => window.removeEventListener('keydown', handleKeyPress)
   }, [debugMode])
 
-  // Animation entfernt -> statisches Hero
+  // Alle Eintrittsanimationen deaktiviert (statische Initialansicht)
 
   return (
   <div className="relative z-30 bg-gradient-to-br from-primary-50 via-white to-accent-50 overflow-hidden min-h-screen flex items-center">
   {/* Solide Hintergrundebene um das fixe Intro komplett zu überdecken */}
   <div className="absolute inset-0 bg-white pointer-events-none" aria-hidden="true"></div>
-  {/* Floating Background Elements */}
-  <div className="absolute inset-0 overflow-hidden">
+      {/* Floating Background Elements with smooth animation */}
+      <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-32 w-80 h-80 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
         <div className="absolute -bottom-32 -left-40 w-80 h-80 bg-accent-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-  </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+      </div>
 
-      {/* Trust Badge - positioned absolutely */}
-  <div className="absolute top-6 left-6 z-20 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-primary-500 rounded-full"></div>
-          <span className="text-sm font-medium text-gray-700">Dr. Anna Müller • 12+ Jahre Erfahrung</span>
-        </div>
-  </div>
+  {/* Trust Badge entfernt gemäß Wunsch */}
 
       <div className="max-w-7xl mx-auto w-full">
         <div className="relative z-10 lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center py-12 lg:py-0">
@@ -65,7 +59,7 @@ export default function Hero() {
                 <span className="block mb-2">
                   Sporternährung, die
                 </span>
-                <span className="block bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 bg-clip-text text-transparent">
+                <span className="block text-gray-900">
                   Ihr Leben verändert
                 </span>
               </h1>
@@ -76,48 +70,13 @@ export default function Hero() {
                 <span className="text-primary-600 font-semibold"> Entdecken Sie, wie die richtige Ernährung Ihre sportlichen Träume Realität werden lässt.</span>
               </p>
 
-              {/* Personal Story Teaser */}
-              <div className="mt-8 p-6 bg-white/70 backdrop-blur-sm rounded-2xl border border-primary-100 shadow-warm">
-                <div className="flex items-start space-x-4">
-                  <img 
-                    src="/Dr.mueller.png" 
-                    alt="Dr. Anna Müller" 
-                    className="w-16 h-16 rounded-full object-cover border-3 border-primary-200 shadow-lg flex-shrink-0"
-                  />
-                  <div>
-                    <p className="text-gray-700 italic leading-relaxed">
-                      "Nach 12 Jahren als Sporternährungsexpertin weiß ich: 
-                      <span className="text-primary-700 font-semibold"> Der Unterschied liegt nicht in perfekten Plänen, sondern in der persönlichen Betreuung."</span>
-                    </p>
-                    <p className="text-sm text-gray-500 mt-2 font-medium">— Dr. Anna Müller, promovierte Oecotrophologin</p>
-                  </div>
-                </div>
-              </div>
+              {/* Personal Story Teaser mit Typewriter */}
+              <TypewriterQuote />
 
-              {/* CTA Buttons */}
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <a 
-                  href="#contact" 
-                  className="group flex items-center justify-center px-8 py-4 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 hover:scale-105 hover:shadow-glow transition-all duration-300 transform shadow-lg"
-                >
-                  <span>Kostenlose Erstberatung sichern</span>
-                  <svg className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
-                <a 
-                  href="#about" 
-                  className="group flex items-center justify-center px-8 py-4 border-2 border-primary-300 text-base font-semibold rounded-xl text-primary-700 bg-white/80 backdrop-blur-sm hover:bg-primary-50 hover:border-primary-400 hover:scale-105 transition-all duration-300 transform shadow-lg"
-                >
-                  <span>Meine Geschichte entdecken</span>
-                  <svg className="ml-3 w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </a>
-              </div>
+              {/* CTA Buttons entfernt */}
 
               {/* Social Proof Indicators */}
-              <div className="mt-12 grid grid-cols-3 gap-6">
+        <div className="mt-12 grid grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-2xl lg:text-3xl font-bold text-primary-600">200+</div>
                   <div className="text-xs lg:text-sm text-gray-600 font-medium">Erfolgreiche Athleten</div>
@@ -130,18 +89,26 @@ export default function Hero() {
                   <div className="text-2xl lg:text-3xl font-bold text-primary-600">12+</div>
                   <div className="text-xs lg:text-sm text-gray-600 font-medium">Jahre Expertise</div>
                 </div>
-              </div>
+        </div>
             </div>
-          </div>
+      </div>
 
           {/* Right Image Column */}
           <div className="lg:col-span-6 mt-12 lg:mt-0">
             <div className="relative">
-              <img
-                className="w-full h-96 lg:h-full lg:min-h-[600px] object-cover rounded-2xl lg:rounded-3xl shadow-2xl"
-                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt="Sporternährung und gesunde Lebensmittel"
-              />
+              {/* Portrait / Hero Image replaced: now using local optimized assets */}
+              <picture>
+                {/* Optional smaller source for mobile (could be a cropped variant if added later) */}
+                {/* <source srcSet="/Frau-mobile.webp" media="(max-width: 640px)" /> */}
+                <source srcSet="/Frau.webp" type="image/webp" />
+                <img
+                  className="w-full h-96 lg:h-full lg:min-h-[600px] object-cover rounded-2xl lg:rounded-3xl shadow-2xl"
+                  src="/Frau.webp"
+                  alt="Portrait von Dr. Anna Müller – Sporternährung und gesunde Ernährung"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </picture>
               
               {/* Overlay with Success Metrics */}
               <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-transparent rounded-2xl lg:rounded-3xl"></div>
@@ -163,15 +130,85 @@ export default function Hero() {
                 </div>
               </div>
 
-              <div className="absolute top-6 right-6 bg-accent-500 text-white p-3 rounded-full shadow-lg">
+        <div className="absolute top-6 right-6 bg-accent-500 text-white p-3 rounded-full shadow-lg">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              </div>
+        </div>
             </div>
-          </div>
+      </div>
         </div>
       </div>
   </div>
+  )
+}
+
+function TypewriterQuote() {
+  const fullText = '"Nach 12 Jahren als Sporternährungsexpertin weiß ich: Der Unterschied liegt nicht in perfekten Plänen, sondern in der persönlichen Betreuung."'
+  const author = '— Dr. Anna Müller, promovierte Oecotrophologin'
+  const [displayed, setDisplayed] = useState('')
+  const [done, setDone] = useState(false)
+  const [started, setStarted] = useState(false)
+  const ref = useRef(null)
+  const idx = useRef(0)
+  const timer = useRef(null)
+
+  // Start when ~30% sichtbarkeit
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) setStarted(true) })
+    }, { threshold: 0.3 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!started || done) return
+    const step = () => {
+      if (idx.current < fullText.length) {
+        setDisplayed(prev => prev + fullText.charAt(idx.current))
+        idx.current += 1
+        timer.current = setTimeout(step, 22)
+      } else {
+        setDone(true)
+      }
+    }
+    timer.current = setTimeout(step, 200)
+    return () => timer.current && clearTimeout(timer.current)
+  }, [started, done, fullText])
+
+  return (
+    <div ref={ref} className="mt-8 relative p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-primary-100 shadow-warm">
+      {/* Ghost layout to reserve space (verhindert Layout-Shift) */}
+      <div aria-hidden="true" className="invisible select-none pointer-events-none">
+        <div className="flex items-start space-x-4">
+          <div className="w-16 h-16 rounded-full border" />
+          <div>
+            <p className="text-gray-700 italic leading-relaxed">{fullText}</p>
+            <p className="text-sm text-gray-500 mt-2 font-medium">{author}</p>
+          </div>
+        </div>
+      </div>
+      {/* Actual content absolut darüber */}
+      <div className="absolute inset-0 p-6">
+        <div className="flex items-start space-x-4">
+          <img
+            src="/frau2.webp"
+            alt="Portrait von Dr. Anna Müller"
+            className="w-16 h-16 rounded-full object-cover border-3 border-primary-200 shadow-lg flex-shrink-0"
+            loading="lazy"
+          />
+          <div className="flex-1">
+            <p className="text-gray-700 italic leading-relaxed">
+              {displayed}
+              {!done && <span className="inline-block w-[6px] h-5 align-middle bg-primary-600 ml-0.5 animate-pulse" />}
+            </p>
+            <p className={`text-sm text-gray-500 mt-2 font-medium transition-opacity duration-500 ${done ? 'opacity-100' : 'opacity-0'}`}>{author}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
