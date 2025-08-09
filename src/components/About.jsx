@@ -30,7 +30,7 @@ export default function About() {
             {/* Timeline Items */}
             <div className="space-y-12">
               {/* Story 1 */}
-              <div className="relative flex items-center animate-slide-in-left">
+              <div id="story-2012" className="relative flex items-center animate-slide-in-left">
                 <div className="flex-shrink-0 w-8 h-8 bg-primary-500 rounded-full border-4 border-white shadow-lg z-10 md:absolute md:left-1/2 md:transform md:-translate-x-1/2"></div>
                 <div className="ml-12 md:ml-0 md:w-1/2 md:pr-8">
                   <div className="bg-white p-6 rounded-2xl shadow-warm border border-primary-100">

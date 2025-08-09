@@ -1,167 +1,112 @@
-import { motion, useScroll, useTransform, animate } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
 
+// Fixiertes Hero: bleibt stehen; nachfolgende Sections mit höherem z-index & vollem Hintergrund überdecken es.
 export default function PhotoJourney() {
-  const containerRef = useRef(null)
-  const [currentStep, setCurrentStep] = useState(0) 
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [manualProgress, setManualProgress] = useState(0)
-  // Track the latest progress to avoid stale closures during chained animations
-  const progressRef = useRef(0)
-  // Separate scroll lock from animation state
-  const [isScrollLocked, setIsScrollLocked] = useState(false)
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end']
-  })
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start','end start'] })
+
+  const clipPath = useTransform(scrollYProgress,[0,0.6,1],[
+    'ellipse(60vmin 90vmin at 85% 50%)',
+    'ellipse(140vmin 140vmin at 55% 50%)',
+    'ellipse(160vmin 160vmin at 50% 50%)'
+  ])
+
+  const [hideText, setHideText] = useState(false)
+  const [removeText, setRemoveText] = useState(false)
+  const initialProgress = useRef(null)
 
   useEffect(() => {
-    document.body.style.overflow = isScrollLocked ? 'hidden' : 'auto'
-    return () => { document.body.style.overflow = 'auto' }
-  }, [isScrollLocked])
-
-  // Helper to keep state and ref in sync during animations
-  const updateProgress = (v) => {
-    setManualProgress(v)
-    progressRef.current = v
-  }
-
-  const triggerNextStep = async () => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    setIsScrollLocked(true)
-    
-    if (currentStep === 0) {
-      // Step 0
-      animate(progressRef.current, progressRef.current + 1, {
-        duration: 3.5,
-        ease: [0.25, 0, 0.75, 1],
-        onUpdate: updateProgress,
-        onComplete: () => {
-          setCurrentStep(1)
-          setIsAnimating(false)
-        }
+    const target = document.getElementById('story-2012')
+    if (!target) return
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) setHideText(true)
       })
-      setTimeout(() => setIsScrollLocked(false), 1750)
-      
-    } else if (currentStep === 1) {
-      // Step 1
-      animate(progressRef.current, progressRef.current + 1, {
-        duration: 2.8,
-        ease: [0.4, 0, 0.8, 1],
-        onUpdate: updateProgress,
-        onComplete: () => {
-          setCurrentStep(2)
-          setIsAnimating(false)
-        }
-      })
-      setTimeout(() => setIsScrollLocked(false), 1400)
-      
-    } else if (currentStep === 2) {
-      // Step 2: Merge, then seamlessly start Step 3 (shrink)
-      animate(progressRef.current, progressRef.current + 1, {
-        duration: 3.2,
-        ease: [0.25, 0.1, 0.8, 1],
-        onUpdate: updateProgress,
-        onComplete: () => {
-          setCurrentStep(3)
-          setIsAnimating(false)
-        }
-      })
-      // Allow scroll mid merge
-      setTimeout(() => setIsScrollLocked(false), 1280)
-    }
-  }
+    }, { root: null, threshold: 0.15 })
+    observer.observe(target)
+    return () => observer.disconnect()
+  }, [])
 
+  // Ausblenden erst nach tatsächlichem Scroll: warte auf Differenz gegenüber initialem Wert
   useEffect(() => {
-    if (isAnimating) return
-    const unsubscribe = scrollYProgress.on('change', (latest) => {
-      if (latest > 0.01 && currentStep < 3) {
-        triggerNextStep()
+    const unsubscribe = scrollYProgress.on('change', v => {
+      if (initialProgress.current === null) {
+        initialProgress.current = v
+        return
+      }
+      // Sobald 20% mehr gescrollt als initial (oder absolut > 0.25) -> ausblenden
+      if (!hideText && (v > initialProgress.current + 0.2 || v > 0.25)) {
+        setHideText(true)
       }
     })
-    return unsubscribe
-  }, [scrollYProgress, currentStep, isAnimating])
+    return () => unsubscribe()
+  }, [scrollYProgress, hideText])
 
-  // Linker Kreis Animation - KLEINER GEMACHT
-  const getLeftClipPath = (progress) => {
-    if (progress <= 1) {
-      // Start: Kreis links, nur 50% im Bild
-      const t = progress
-      const x = 0 + (25 * t) // 0% → 25% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
-      
-    } else if (progress <= 2) {
-      // Kreise kommen zusammen
-      const t = progress - 1
-      const x = 25 + (25 * t) // 25% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
-      
-    } else if (progress <= 3) {
-      // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
-    } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
+  // Nach dem Ausblenden komplett entfernen (Performance & Accessibility)
+  useEffect(() => {
+    if (hideText) {
+      const t = setTimeout(() => setRemoveText(true), 600) // etwas länger als die 500ms Transition
+      return () => clearTimeout(t)
     }
-  }
-
-  // Rechter Kreis Animation - KLEINER GEMACHT
-  const getRightClipPath = (progress) => {
-    if (progress <= 1) {
-      // Start: Kreis rechts, nur 50% im Bild
-      const t = progress
-      const x = 100 - (25 * t) // 100% → 75% (Bewegung zur Mitte, nur 50% sichtbar)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
-      
-    } else if (progress <= 2) {
-      // Kreise kommen zusammen
-      const t = progress - 1
-      const x = 75 - (25 * t) // 75% → 50% (zur Mitte)
-      return `circle(min(45vh, 45vw) at ${x}% 55%)` // Reduced from 75 to 45
-      
-    } else if (progress <= 3) {
-      // In der Mitte vereint - beide Kreise überlagern sich
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
-    } else {
-      return `circle(min(45vh, 45vw) at 50% 55%)` // Reduced from 75 to 45
-    }
-  }
+  }, [hideText])
 
   return (
-    <>
-      {/* Linker Kreis - gleiches Foto */}
+    <section ref={ref} className="relative w-full" aria-label="Intro Hero">
+      {/* Spacer sorgt für Scroll (Hero selbst fixed) */}
+      <div className="h-[140vh]" />
+
+      {/* Fixiertes Hero unterhalb (niedriger z-index) */}
       <motion.div
-        className="fixed top-0 left-0 w-screen h-screen z-0 pointer-events-none"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          clipPath: getLeftClipPath(manualProgress)
-        }}
+        className="fixed inset-0 z-0 overflow-hidden"
+        style={{ clipPath, WebkitClipPath: clipPath }}
+        aria-hidden="true"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 to-black/30"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1920&q=80)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }} />
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/20 to-white/70" />
       </motion.div>
 
-      {/* Rechter Kreis - gleiches Foto */}
-      <motion.div
-        className="fixed top-0 left-0 w-screen h-screen z-0 pointer-events-none"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          clipPath: getRightClipPath(manualProgress)
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-black/10 to-black/30"></div>
-      </motion.div>
-      
-      <div ref={containerRef} className="relative z-10">
-        <div className="h-screen"></div>
-        <div className="h-screen"></div>
-        <div className="h-screen"></div>
-        <div className="h-screen"></div>
-      </div>
-    </>
+      {/* Fixierter Textlayer (wird nach Fade dauerhaft entfernt) */}
+      {!removeText && (
+        <div className={`fixed inset-0 z-0 flex items-center pointer-events-none transition-opacity duration-500 ${hideText ? 'opacity-0' : 'opacity-100'}`}>
+          <div className="w-full max-w-7xl mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-6 lg:pr-8 pointer-events-auto">
+                <div className="mb-6 uppercase tracking-[0.25em] text-xs font-semibold text-neutral-500">Individuelle & Professionelle Beratung</div>
+                <h1 className="text-4xl sm:text-5xl font-display font-semibold leading-tight text-neutral-800 mb-6">
+                  Ernährungsberatung
+                  <span className="block text-accent">für nachhaltige Veränderungen</span>
+                </h1>
+                <p className="text-lg text-neutral-600 leading-relaxed mb-8 max-w-xl">
+                  Wissenschaftlich fundiert, persönlich begleitet. Wir entwickeln gemeinsam eine Ernährung, die zu Ihrem Alltag, Ihren Zielen und Ihrer Gesundheit passt – ohne starre Verbote.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="#contact" className="btn-primary !px-10 !py-4 text-sm font-medium tracking-wide">Kostenlose Erstberatung</a>
+                  <a href="#about" className="btn-secondary !px-10 !py-4 text-sm font-medium tracking-wide">Mehr erfahren</a>
+                </div>
+                <div className="mt-10 flex flex-wrap gap-8 text-sm text-neutral-500">
+                  <div>
+                    <div className="font-semibold text-neutral-800 text-lg">200+</div>
+                    Athlet:innen begleitet
+                  </div>
+                  <div>
+                    <div className="font-semibold text-neutral-800 text-lg">12+</div>
+                    Jahre Expertise
+                  </div>
+                  <div>
+                    <div className="font-semibold text-neutral-800 text-lg">98%</div>
+                    Zufriedenheit
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
   )
 }

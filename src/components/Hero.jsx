@@ -72,11 +72,13 @@ export default function Hero() {
 
   return (
     <motion.div 
-      className="relative bg-gradient-to-br from-primary-50 via-white to-accent-50 overflow-hidden min-h-screen flex items-center"
+      className="relative z-30 bg-gradient-to-br from-primary-50 via-white to-accent-50 overflow-hidden min-h-screen flex items-center"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
+  {/* Solide Hintergrundebene um das fixe Intro komplett zu überdecken */}
+  <div className="absolute inset-0 bg-white pointer-events-none" aria-hidden="true"></div>
       {/* Floating Background Elements with smooth animation */}
       <motion.div 
         className="absolute inset-0 overflow-hidden"
