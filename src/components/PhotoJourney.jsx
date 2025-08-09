@@ -16,6 +16,8 @@ export default function PhotoJourney() {
   const [removeText, setRemoveText] = useState(false)
   const initialProgress = useRef(null)
 
+  // Eintrittsanimationen entfernt -> statisch beim Laden
+
   useEffect(() => {
     const target = document.getElementById('story-2012')
     if (!target) return
@@ -56,7 +58,7 @@ export default function PhotoJourney() {
       {/* Spacer sorgt für Scroll (Hero selbst fixed) */}
       <div className="h-[140vh]" />
 
-      {/* Fixiertes Hero unterhalb (niedriger z-index) */}
+  {/* Fixiertes Hero unterhalb (niedriger z-index) ohne Eintrittsanimation */}
       <motion.div
         className="fixed inset-0 z-0 overflow-hidden"
         style={{ clipPath, WebkitClipPath: clipPath }}
@@ -72,7 +74,9 @@ export default function PhotoJourney() {
 
       {/* Fixierter Textlayer (wird nach Fade dauerhaft entfernt) */}
       {!removeText && (
-        <div className={`fixed inset-0 z-0 flex items-center pointer-events-none transition-opacity duration-500 ${hideText ? 'opacity-0' : 'opacity-100'}`}>
+        <div
+          className={`fixed inset-0 z-0 flex items-center pointer-events-none transition-opacity duration-500 ${hideText ? 'opacity-0' : 'opacity-100'}`}
+        >
           <div className="w-full max-w-7xl mx-auto px-6 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-6 lg:pr-8 pointer-events-auto">
@@ -105,7 +109,7 @@ export default function PhotoJourney() {
               </div>
             </div>
           </div>
-        </div>
+  </div>
       )}
     </section>
   )
