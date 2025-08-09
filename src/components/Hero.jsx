@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValue, animate } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 
-export default function Hero() {
+export default function Hero({ disableIntro = false }) {
   const ref = useRef(null)
   // REAL scroll progress (nur nach Intro relevant)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start','end start'] })
@@ -9,17 +9,17 @@ export default function Hero() {
   // Virtueller Progress für die erste Cine-Animation (0->1 über Zeit, nicht Scroll)
   const introProgress = useMotionValue(0)
   const [introPlaying, setIntroPlaying] = useState(false)
-  const [introDone, setIntroDone] = useState(false)
+  const [introDone, setIntroDone] = useState(disableIntro)
   
   // Check if user is in hero area on mount
   useEffect(() => {
+    if (disableIntro) return
     const initialScroll = window.scrollY
     const heroHeight = window.innerHeight
     if (initialScroll > heroHeight * 0.3) {
-      // User ist nicht im Hero - Animation als fertig markieren
       setIntroDone(true)
     }
-  }, [])
+  }, [disableIntro])
   
   // EINFACH: Nach Auto-Animation bleibt Bild links stehen - KEINE Rückwärts-Animation
   const finalProgress = useMotionValue(0.5)
@@ -52,7 +52,7 @@ export default function Hero() {
   const cancelRef = useRef(false)
 
   const startIntro = () => {
-    if (introPlaying || introDone || cancelRef.current) return
+  if (disableIntro || introPlaying || introDone || cancelRef.current) return
     setIntroPlaying(true)
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const duration = reduce ? 0.01 : 6.5
@@ -110,7 +110,7 @@ export default function Hero() {
 
   // Erste Interaktion (Wheel/Touch/Key) sofort abfangen & Intro starten OHNE dass Seite scrollt
   useEffect(() => {
-    if (introDone) return
+    if (disableIntro || introDone) return
     const startAndBlock = (e) => {
       if (introDone) return
       // Scroll keys
@@ -164,7 +164,7 @@ export default function Hero() {
   return (
   <section
       ref={ref}
-      className="relative w-full min-h-screen snap-start section-bg-1"
+  className="relative w-full min-h-screen section-bg-1"
       aria-label="Landing Hero"
       data-autoscroll="none"
     >
@@ -182,7 +182,7 @@ export default function Hero() {
           }}
         />
       </motion.div>
-  {mountIntro && (
+  {(!disableIntro && mountIntro) && (
         <motion.div
           className="absolute inset-0 z-0 flex items-center pointer-events-none"
           style={{ opacity: fadeOpacity }}

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Navigation from './components/Navigation'
-import Hero from './components/Hero'
-import ValueIntro from './components/ValueIntro'
+import HeroStack from './components/HeroStack'
 import Services from './components/Services'
 import About from './components/About'
 import Testimonials from './components/Testimonials'
@@ -35,8 +34,7 @@ function App() {
       default:
         return (
           <>
-            <Hero />
-            <ValueIntro />
+            <HeroStack />
             <Services />
             <About />
             <Testimonials />
