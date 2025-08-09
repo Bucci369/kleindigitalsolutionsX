@@ -34,7 +34,7 @@
 
 html {
   font-family: var(--font-body);
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -122,9 +122,9 @@ body {
   }
   
   .text-reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s var(--easing-emphasized);
+    opacity: 1;
+    transform: translateY(0);
+    transition: none;
   }
   
   .text-reveal.in-view {
@@ -155,9 +155,9 @@ body {
   
   /* Scroll reveal animations */
   .scroll-reveal {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 1s var(--easing-emphasized);
+    opacity: 1;
+    transform: translateY(0);
+    transition: none;
   }
   
   .scroll-reveal.revealed {
@@ -179,9 +179,9 @@ body {
     }
   }
 
-  /* Smooth scrolling */
+  /* Normal scrolling */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
   /* Minimal scrollbar */
